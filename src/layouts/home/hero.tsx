@@ -1,11 +1,62 @@
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { ChevronDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const HeroLayout = () => {
   const text = 'KOLABORASI, PENGEMBANGAN & INOVASI'
   const letters = text.split('')
+  const [isParallaxActive, setIsParallaxActive] = useState(false)
+  const [showScrollHint, setShowScrollHint] = useState(true)
+
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  // bikin animasi smooth
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 })
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 })
+
+  // transform jadi range kecil (parallax tipis, misalnya 15px max)
+  const xTransform = useTransform(smoothX, [-1, 1], [-15, 15])
+  const yTransform = useTransform(smoothY, [-1, 1], [-15, 15])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsParallaxActive(true)
+    }, 1500) // delay 2 detik setelah semua animasi intro selesai
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    if (!isParallaxActive) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window
+      const x = (e.clientX / innerWidth) * 3 - 1
+      const y = (e.clientY / innerHeight) * 3 - 1
+      mouseX.set(x)
+      mouseY.set(y)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [isParallaxActive, mouseX, mouseY])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowScrollHint(false)
+      } else {
+        setShowScrollHint(true)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <section className="min-h-screen bg-bottom flex flex-col w-full bg-cover justify-center items-center text-center bg-[url('/bg-home2.png')] relative overflow-hidden px-4">
+    <section className="min-h-screen md:bg-bottom bg-bottom-right flex flex-col w-full bg-cover justify-center items-center text-center bg-[url('/bg-home2.png')] relative overflow-hidden px-4">
       <p className='text-gray-400 uppercase tracking-widest text-sm mb-3 flex flex-wrap'>
         {letters.map((char, index) => (
           <motion.span
@@ -121,7 +172,7 @@ const HeroLayout = () => {
         digital dan kerja sama tim.
       </motion.p>
       {/* Buttons */}
-      <div className='flex flex-col md:flex-row items-center justify-center gap-4'>
+      {/* <div className='flex flex-col md:flex-row items-center justify-center gap-4'>
         <motion.button
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -139,9 +190,9 @@ const HeroLayout = () => {
         >
           More about us
         </motion.a>
-      </div>
+      </div> */}
       {/* Sponsor */}
-      <div className='mt-16 flex flex-col items-center justify-center text-gray-400'>
+      <div className=' flex flex-col items-center justify-center text-gray-400'>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -168,20 +219,65 @@ const HeroLayout = () => {
             Unicode
           </motion.span>
         </div>
+
+<motion.div
+  className='absolute bottom-10 flex flex-col items-center justify-center text-gray-500'
+  initial={{ opacity: 0 }}
+  animate={{ opacity: showScrollHint ? 1 : 0, y: showScrollHint ? 0 : 10 }}
+  transition={{ duration: 0.6, ease: 'easeInOut' }}
+>
+  {/* <motion.p
+    initial={{ opacity: 0, y: 5 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 1.8, ease: 'easeOut' }}
+    className='text-sm mb-1 tracking-widest uppercase'
+  >
+    Scroll down
+  </motion.p> */}
+
+  {/* 3 panah lucide bertumpuk vertikal */}
+  <div className='flex flex-col items-center'>
+    {[0, 0.03, 0.04].map((delay, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: [0, 1, 1, 0], y: [0, 3, 0, 0] }}
+        transition={{
+          duration: 2.4,
+          delay,
+          repeat: Infinity,
+          ease: 'easeInOut'
+        }}
+      >
+        <ChevronDown size={14} strokeWidth={3}  className='' />
+      </motion.div>
+    ))}
+  </div>
+</motion.div>
+
+
       </div>
-      <div className='absolute w-full h-screen z-[99] flex items-center '>
+      <div className='absolute w-full h-screen z-[99] md:flex hidden items-center '>
         <div className='w-1/2 flex gap-2 items-center h-full'>
           <motion.div
             initial={{ opacity: 0, y: 100, rotate: -15 }}
             animate={{ opacity: 1, y: 0, rotate: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className='w-24 h-24 bg-white rounded-xl relative bottom-56 left-32  shadow-xl'
-          ></motion.div>
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
+            className='w-24 h-24 bg-white rounded-xl relative bottom-56 left-32 shadow-xl flex justify-center items-center'
+          >
+            <img
+              src='/logos/institusi/logo-vokasi.png'
+              alt=''
+              className='scale-150 relative right-2'
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: -100, rotate: 30 }}
             animate={{ opacity: 1, x: 0, rotate: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
             className='w-16 h-16 bg-white rounded-xl relative bottom-24 left-44  shadow-xl'
           ></motion.div>
 
@@ -189,19 +285,30 @@ const HeroLayout = () => {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4, ease: 'backOut' }}
-            className='w-20 h-20 bg-white rounded-xl relative top-64 left-44 shadow-xl'
-          ></motion.div>
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
+            className='w-20 h-20 bg-white rounded-xl relative top-64 left-44 shadow-xl flex justify-center items-center'
+          >
+            <img
+              src='/logos/institusi/logo-kotabgr.png'
+              alt=''
+              className='scale-110'
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 150 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
-            className='w-36 h-36 bg-white rounded-xl relative top-36 right-36 shadow-xl'
-          ></motion.div>
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
+            className='w-36 h-36 bg-white rounded-xl relative top-36 right-36 shadow-xl p-6 flex justify-center items-center'
+          >
+            <img src='/logos/institusi/logo-kemdikbud.png' alt='' />
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
             className='w-14 h-14 bg-white rounded-xl  relative bottom-12 right-80 shadow-xl'
           ></motion.div>
         </div>
@@ -215,6 +322,7 @@ const HeroLayout = () => {
               type: 'spring',
               stiffness: 80
             }}
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
             className='w-20 h-20 bg-white rounded-xl relative bottom-56 shadow-xl'
           ></motion.div>
           <motion.div
@@ -226,6 +334,7 @@ const HeroLayout = () => {
               ease: 'easeOut',
               type: 'tween'
             }}
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
             className='w-14 h-14 bg-white rounded-xl relative bottom-24 left-36 shadow-xl'
           ></motion.div>
           <motion.div
@@ -239,8 +348,11 @@ const HeroLayout = () => {
               delay: 0.4,
               ease: 'easeInOut'
             }}
-            className='w-28 h-28 bg-white rounded-xl relative top-14 right-12 shadow-xl'
-          ></motion.div>
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
+            className='w-28 h-28 bg-white rounded-xl relative top-14 right-12 shadow-xl flex justify-center items-center p-1'
+          >
+            <img src='/logos/institusi/logo-smkbisa.png' alt='' />
+          </motion.div>
           {/* Zoom masuk sambil goyang ke kiri-kanan */}
           <motion.div
             initial={{ opacity: 0, scale: 0, x: -100 }}
@@ -254,6 +366,7 @@ const HeroLayout = () => {
               delay: 0.6,
               ease: 'easeOut'
             }}
+            style={isParallaxActive ? { x: xTransform, y: yTransform } : {}}
             className='w-16 h-16 bg-white rounded-xl relative top-64 right-56 shadow-xl'
           ></motion.div>
         </div>
