@@ -1,0 +1,12 @@
+.about-section {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.about-section.fade-in {
+  opacity: 1;
+}
+
+.about-section.fade-out {
+  opacity: 0;
+}
