@@ -1,167 +1,153 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type JSX,
+} from "react";
+import { motion } from "framer-motion";
+import DynamicTextBox from "./dynamicTextBox";
 
-// ✅ Drop-in component: a single sticky box whose content (title + text)
-// swaps as you scroll through 4 sections: Tentang Kami, Visi, Misi, Tujuan.
-// TailwindCSS required. No external CSS needed.
+type Side = "left" | "right";
+const RED_SIDE_BY_ROW: Side[] = ["left", "right", "left", "right"];
+const ROWS = RED_SIDE_BY_ROW.length;
+const BLUE_IMAGES = [
+  "/assets/Meeting.png",
+  "/assets/Teaching.png",
+  "/assets/Meeting.png",
+  "/assets/Teaching.png",
+];
+// const GRID_WIDTH = 1100;
 
-const sectionsData = [
-  {
-    id: "tentang",
-    title: "Tentang Kami",
-    text:
-      "Pondok Pesantren Imam Bukhari berdiri sejak 1999 di Karanganyar, Jawa Tengah. Berfokus pada tahfizh, bahasa Arab, dan pembinaan akhlak, kami berkomitmen melahirkan generasi thalibul ilmi yang bermanhaj salaf dan berdampak luas bagi dakwah Islam di Indonesia.",
-  },
-  {
-    id: "visi",
-    title: "Visi",
-    text:
-      "Menjadi lembaga pendidikan Islam berbasis pesantren yang unggul dalam ilmu, amal, dan akhlak; melahirkan generasi Qur’ani yang kokoh aqidah dan lurus manhajnya.",
-  },
-  {
-    id: "misi",
-    title: "Misi",
-    text:
-      "(1) Menyelenggarakan pendidikan tahfizh dan bahasa Arab yang bertahap dan terukur. (2) Membina akhlak dan adab santri melalui teladan dan pembiasaan. (3) Memperluas kegiatan dakwah dan pengabdian masyarakat.",
-  },
-  {
-    id: "tujuan",
-    title: "Tujuan",
-    text:
-      "Mencetak lulusan yang berilmu syar’i, berakhlak mulia, dan mampu berkontribusi positif bagi masyarakat serta dakwah Islam.",
-  },
+const TITLES = ["Tentang Kami", "Visi", "Misi", "Tujuan"];
+const BODIES = [
+  // Tentang Kami
+  "Kami adalah sekelompok orang yang percaya bahwa belajar dan bertumbuh adalah perjalanan bersama. Kami bekerja dengan hati, menghargai perbedaan, dan berusaha menciptakan ruang yang nyaman, ramah, dan terasa dekat. Di sini, setiap ide didengar, setiap orang dihargai, dan setiap langkah kecil dirayakan. Kami ingin hadir sebagai teman yang siap menyimak, membantu, dan menemani.",
+  
+  // Visi
+  "Menjadi tempat yang membangkitkan harapan serta keberanian untuk mencoba hal baru. Kami membayangkan lingkungan yang aman dan inklusif, di mana siapa pun merasa pantas untuk belajar, berkembang, dan berkontribusi. Kami ingin menjadi jembatan yang menghubungkan keinginan baik dengan tindakan sederhana yang berdampak—pelan tapi pasti, manusiawi, dan berkelanjutan.",
+  
+  // Misi
+  "Mendengarkan lebih dulu sebelum menawarkan jawaban. Menyederhanakan hal yang rumit agar mudah dipahami. Menghadirkan panduan yang jernih, praktik yang realistis, serta dukungan yang konsisten. Kami berupaya menjaga kualitas—rapi, teliti, dan dapat diandalkan—seraya tetap hangat dan rendah hati dalam setiap interaksi.",
+  
+  // Tujuan
+  "Membantu lebih banyak orang merasa mampu, diterima, dan diberdayakan. Kami berharap setiap pertemuan meninggalkan kesan baik: lebih tenang, lebih paham, dan lebih siap melangkah. Dengan langkah yang tertata dan niat yang tulus, kami ingin memberi manfaat yang nyata—bukan sekadar hasil, tetapi juga rasa: rasa aman, dihargai, dan punya arah.",
 ];
 
-function useActiveOnScroll(sectionIds: string[], rootMargin = "-40% 0px -40% 0px") {
-  const [activeId, setActiveId] = useState(sectionIds[0]);
-  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+export default function TwoColFourRowScrollPublic(): JSX.Element {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const placeholderRefs = useMemo<React.RefObject<HTMLDivElement | null>[]>(
+    () => Array.from({ length: ROWS }, () => React.createRef<HTMLDivElement>()),
+    []
+  );
+
+  const [activeRow, setActiveRow] = useState(0);
+  const [redBoxPos, setRedBoxPos] = useState({ x: 0, y: 0 });
+
+  const offsetIn = (
+    el: HTMLDivElement | null,
+    parent: HTMLDivElement | null
+  ) => {
+    if (!el || !parent) return { x: 0, y: 0 };
+    const a = el.getBoundingClientRect();
+    const b = parent.getBoundingClientRect();
+    return { x: a.left - b.left, y: a.top - b.top };
+  };
+
+  const recalc = () => {
+    const el = placeholderRefs[activeRow]?.current;
+    setRedBoxPos(offsetIn(el, containerRef.current));
+  };
+
+  useLayoutEffect(() => {
+    recalc();
+    const onResize = () => recalc();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRow]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const io = new IntersectionObserver(
       (entries) => {
-        // Ambil entry dengan intersectionRatio tertinggi dalam viewport
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target?.id) setActiveId(visible.target.id);
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const idx = placeholderRefs.findIndex((r) => r.current === e.target);
+          if (idx !== -1) setActiveRow(idx);
+        });
       },
-      { root: null, threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin }
+      { root: null, rootMargin: "-50% 0px -50% 0px", threshold: 0 }
     );
+    placeholderRefs.forEach((r) => r.current && io.observe(r.current));
+    return () => {
+      placeholderRefs.forEach((r) => r.current && io.unobserve(r.current));
+      io.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    sectionIds.forEach((id) => {
-      const el = refs.current[id];
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [sectionIds, rootMargin]);
-
-  return { activeId, refs } as const;
-}
-
-const AboutSection: React.FC = () => {
-  const ids = useMemo(() => sectionsData.map((s) => s.id), []);
-  const { activeId, refs } = useActiveOnScroll(ids);
-  const active = sectionsData.find((s) => s.id === activeId) ?? sectionsData[0];
-
-  // Apakah posisi harus ditukar? (Visi & Tujuan swap, Misi kembali normal)
-  const isSwapped = activeId === "visi" || activeId === "tujuan";
+  useLayoutEffect(() => {
+    const t = setTimeout(recalc, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <section className="relative w-full bg-gradient-to-b from-slate-50 to-white">
-      <div className="mx-auto max-w-6xl px-4 py-24 md:py-32">
-        {/* Grid dengan motion.div agar transisi posisi smooth */}
-        <motion.div
-          className={
-            "grid gap-8 md:grid-cols-2 md:gap-12" +
-            (isSwapped
-              ? " md:[&>*:first-child]:order-2 md:[&>*:last-child]:order-1"
-              : "")
-          }
-          layout
-          transition={{ type: "spring", stiffness: 400, damping: 40 }}
-        >
-          {/* Left: Sticky box */}
-          <motion.div
-            className="md:sticky md:top-24 self-start"
-            layout
-            transition={{ type: "spring", stiffness: 400, damping: 40 }}
-          >
-            <div className="rounded-2xl border bg-white shadow-sm">
-              <div className="p-6 md:p-8">
-                {/* Title + content with crossfade */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={active.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                  >
-                    <h3 className="text-xl font-semibold text-blue-700 md:text-2xl">
-                      {active.title}
-                    </h3>
-                    <p className="mt-3 text-slate-700 leading-relaxed">
-                      {active.text}
-                    </p>
-                    <button className="mt-6 inline-flex items-center rounded-xl border px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50">
-                      Selengkapnya…
-                    </button>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Dots/steps indicator */}
-                <div className="mt-6 flex items-center gap-2">
-                  {sectionsData.map((s) => (
-                    <span
-                      key={s.id}
-                      className={
-                        "h-2 w-2 rounded-full transition-all " +
-                        (active.id === s.id
-                          ? "bg-blue-600 scale-125"
-                          : "bg-slate-300")
-                      }
-                      aria-label={s.title}
-                    />
-                  ))}
-                </div>
+    <div className="min-h-screen w-full flex justify-center py-24">
+      <div
+        ref={containerRef}
+        className="relative w-full max-w-[1600px] grid grid-cols-2 gap-x-24 gap-y-40 px-16"
+      >
+        {Array.from({ length: ROWS }).map((_, row) => {
+          const redSide = RED_SIDE_BY_ROW[row];
+          const isLeftRed = redSide === "left";
+          const blueImage = BLUE_IMAGES[row];
+          return (
+            <div key={row} className="contents">
+              {/* KIRI */}
+              <div
+                ref={isLeftRed ? placeholderRefs[row] : undefined}
+                className={` overflow-hidden ${
+                  isLeftRed ? "bg-transparent" : "bg-transparent"
+                } flex items-center justify-center`}
+              >
+                {!isLeftRed && (
+                  <img
+                    src={blueImage}
+                    alt={`Blue Box ${row + 1}`}
+                    className="h-full w-full object-contain rounded-2xl shadow-lg"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+              {/* KANAN */}
+              <div
+                ref={!isLeftRed ? placeholderRefs[row] : undefined}
+                className={`rounded-2xl overflow-hidden ${
+                  !isLeftRed ? "bg-transparent" : "bg-transparent"
+                } flex items-center justify-center`}
+              >
+                {isLeftRed && (
+                  <img
+                    src={blueImage}
+                    alt={`Blue Box ${row + 1}`}
+                    className="h-full w-full object-contain rounded-2xl shadow-lg"
+                    loading="lazy"
+                  />
+                )}
               </div>
             </div>
-          </motion.div>
-
-          {/* Right: Scroller triggers */}
-          <motion.div
-            className="relative"
-            style={{ scrollSnapType: "y mandatory" }}
-            layout
-            transition={{ type: "spring", stiffness: 400, damping: 40 }}
-          >
-            {sectionsData.map((s, idx) => (
-              <div
-                key={s.id}
-                id={s.id}
-                ref={(el) => (refs.current[s.id] = el)}
-                className="mb-16 h-[75vh] rounded-2xl border bg-gradient-to-br from-slate-100 to-slate-50 p-6 md:p-8"
-                style={{ scrollSnapAlign: idx === 0 ? "start" : "center" }}
-              >
-                <div className="flex h-full flex-col justify-end">
-                  <div className="text-sm font-medium text-slate-500">
-                    0{idx + 1}
-                  </div>
-                  <div className="mt-1 text-lg font-semibold text-slate-800">
-                    {s.title}
-                  </div>
-                  <p className="mt-2 max-w-xl text-slate-600">
-                    Geser/scroll ke bawah untuk mengganti isi kotak di kiri.
-                  </p>
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
+          );
+        })}
+        <DynamicTextBox
+          x={redBoxPos.x}
+          y={redBoxPos.y}
+          title={TITLES[activeRow]}
+          body={BODIES[activeRow]}
+        />
       </div>
-    </section>
+    </div>
   );
-};
-
-export default AboutSection;
+}

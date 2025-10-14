@@ -6,10 +6,12 @@ const HomePage = () => {
     <main className="w-full min-h-screen bg-[#f8fafc]">
       <HeroLayout />
 
-      <section className="bg-transparent w-full flex flex-col items-center ">
-        <div className="shadow-lg">
+      <section className="bg-transparent w-full flex flex-col items-center mb-10">
+        <div className="">
           <AboutSection />
         </div>
+      </section>
+      <section>
       </section>
     </main>
   )
