@@ -4,8 +4,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
-import SaintekPage from './pages/saintek'
+import SaintekPage from './pages/saintek/saintek'
 import { useEffect, useRef, useState } from 'react'
+import DetailsNews from './pages/saintek/detail/detailNews'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -93,6 +94,7 @@ const menuRefs = useRef<HTMLButtonElement[]>([])
       <Routes>
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/saintek'} element={<SaintekPage />} />
+        <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
       </Routes>
     </BrowserRouter>
   )
