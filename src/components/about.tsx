@@ -8,7 +8,7 @@ import React, {
   type JSX,
 } from "react";
 import { motion } from "framer-motion";
-import DynamicTextBox from "./dynamicTextBox";
+import DynamicTextBox from "../layouts/home/dynamicTextBox";
 
 type Side = "left" | "right";
 const RED_SIDE_BY_ROW: Side[] = ["left", "right", "left", "right"];
