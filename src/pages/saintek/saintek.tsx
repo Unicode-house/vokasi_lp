@@ -1,53 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import Loader from '@/components/loader'
 import useNewsModule from '@/hooks/useNewsModule'
-import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-const categories = [
-  'AI',
-  'Machine Learning',
-  'Game Development',
-  'Cybersecurity',
-  'Blockchain',
-  'Web Development',
-  'Mobile Apps',
-  'Cloud Computing',
-  'AR/VR',
-  'IoT',
-  'Data Science',
-  'DevOps',
-  'Quantum Computing'
-]
 
-const colors = [
-  'bg-green-500',
-  'bg-purple-500',
-  'bg-blue-500',
-  'bg-emerald-500',
-  'bg-orange-500',
-  'bg-yellow-500',
-  'bg-pink-500',
-  'bg-amber-500'
-]
 
 const SaintekPage = () => {
   const navigator = useNavigate()
   const { useGetGNews } = useNewsModule()
   const { data } = useGetGNews()
-  const scrollRef = useRef<HTMLDivElement>(null)
 
 
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: direction === 'left' ? -200 : 200,
-        behavior: 'smooth'
-      })
-    }
-  }
+
 
   console.log(data)
   return (
@@ -123,39 +88,11 @@ const SaintekPage = () => {
           </div>
 
           <div className='relative w-full flex items-center px-8'>
-            {/* Tombol kiri */}
-            <button
-              title='prev'
-              onClick={() => scroll('left')}
-              className='absolute left-4 z-10 bg-white shadow-md p-2 rounded-full hover:bg-gray-100'
-            >
-              <ChevronLeft className='w-5 h-5' />
-            </button>
 
-            {/* Scrollable menu */}
-            <div
-              ref={scrollRef}
-              className='flex gap-3 overflow-x-auto no-scrollbar scroll-smooth px-14 w-full'
-            >
-              {categories.map((cat, idx) => (
-                <button
-                  key={idx}
-                  className={`flex-shrink-0 px-4 py-2 text-white rounded-full transition 
-          ${colors[idx % colors.length]} hover:brightness-90`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
 
-            {/* Tombol kanan */}
-            <button
-              title='next'
-              onClick={() => scroll('right')}
-              className='absolute right-4 z-10 bg-white shadow-md p-2 rounded-full hover:bg-gray-100'
-            >
-              <ChevronRight className='w-5 h-5' />
-            </button>
+
+
+          
           </div>
           <div className='grid grid-cols-3 gap-6'>
             {data?.map((i: any, index: number) => (
