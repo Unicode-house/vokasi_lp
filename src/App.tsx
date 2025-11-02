@@ -6,6 +6,7 @@ import './App.css'
 import HomePage from './pages/home'
 import SaintekPage from './pages/saintek'
 import { useEffect, useRef, useState } from 'react'
+import Contact from './pages/contact'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -93,6 +94,7 @@ const menuRefs = useRef<HTMLButtonElement[]>([])
       <Routes>
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/saintek'} element={<SaintekPage />} />
+        <Route path={'/kontak'} element={<Contact />} />
       </Routes>
     </BrowserRouter>
   )
