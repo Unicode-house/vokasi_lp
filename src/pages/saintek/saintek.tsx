@@ -1,195 +1,165 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import Loader from '@/components/loader'
-import useNewsModule from '@/hooks/useNewsModule'
-import { useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import useNewsModule from "@/hooks/useNewsModule";
 
-const categories = [
-  'AI',
-  'Machine Learning',
-  'Game Development',
-  'Cybersecurity',
-  'Blockchain',
-  'Web Development',
-  'Mobile Apps',
-  'Cloud Computing',
-  'AR/VR',
-  'IoT',
-  'Data Science',
-  'DevOps',
-  'Quantum Computing'
-]
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeInOut" },
+  },
+};
 
-const colors = [
-  'bg-green-500',
-  'bg-purple-500',
-  'bg-blue-500',
-  'bg-emerald-500',
-  'bg-orange-500',
-  'bg-yellow-500',
-  'bg-pink-500',
-  'bg-amber-500'
-]
+const HeroSection = () => {
+  return (
+    <section className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 px-4 md:px-20 h-auto md:h-[90vh] py-10">
+      {/* Left Feature */}
+      <div className="md:col-span-2 relative rounded-3xl overflow-hidden group">
+        <img
+          src="https://asset.kompas.com/crops/01JNoXR_OzJfy-94LkVRZthWi_0=/0x2:800x536/1200x800/data/photo/2024/09/19/66ebca0e60f61.jpg"
+          alt="Pendiri dan mantan CEO Marvell Technology"
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-3xl"></div>
+        <div className="absolute inset-0 flex flex-col justify-end p-8 text-white gap-3">
+          <span className="py-1 px-4 bg-red-200 w-fit rounded-full text-red-600 font-semibold text-sm">
+            News
+          </span>
+          <h1 className="text-3xl md:text-4xl font-bold leading-snug">
+            Pendiri dan mantan CEO Marvell Technology, Meninggal Dunia
+          </h1>
+          <p className="text-sm md:text-base max-w-3xl opacity-90">
+            Sehat Sutardja, meninggal dunia di usia 63 tahun. Kepergiannya
+            meninggalkan duka mendalam di dunia teknologi dan bisnis.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Stack */}
+      <div className="flex flex-col gap-4">
+        {[
+          {
+            img: "https://akcdn.detik.net.id/community/media/visual/2025/03/14/ilustrasi-data-center-1741939204417_169.jpeg?w=700&q=90",
+            source: "www.detik.com",
+            title:
+              "Ekonomi Digital Melonjak, Indonesia Berebut Jadi Pusat Data Center ASEAN",
+          },
+          {
+            img: "https://akcdn.detik.net.id/community/media/visual/2020/10/28/ilustrasi-koneksi-internet_169.jpeg?w=700&q=90",
+            source: "www.detik.com",
+            title:
+              "Isu Koneksi dan Infrastruktur: Dampak terhadap Transformasi Digital",
+          },
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="relative rounded-3xl overflow-hidden group h-64 md:h-1/2"
+          >
+            <img
+              src={item.img}
+              alt={item.title}
+              loading="lazy"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent rounded-3xl flex items-end p-4">
+              <div className="text-white">
+                <span className="px-3 py-1 rounded-full bg-[#8054f3] text-sm">
+                  {item.source}
+                </span>
+                <h4 className="mt-2 font-semibold text-sm md:text-base leading-snug">
+                  {item.title}
+                </h4>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const NewsIntro = () => (
+  <motion.div
+    variants={fadeInUp}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.3 }}
+    className="flex flex-col items-center text-center gap-4 py-10"
+  >
+    <div className="px-4 py-1 rounded-full bg-[#8054f3] text-white text-sm font-semibold">
+      Blog
+    </div>
+    <h2 className="text-4xl md:text-6xl font-bold text-gray-900">
+      Berita Terbaru
+    </h2>
+    <p className="text-gray-600 max-w-2xl text-base md:text-lg leading-snug">
+      Baca berita terkini seputar sains dan teknologi — mulai dari inovasi,
+      penelitian, hingga tren digital global yang sedang berkembang.
+    </p>
+  </motion.div>
+);
+
+const NewsGrid = ({ data, navigator }: any) => (
+  <motion.div
+    variants={fadeInUp}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.3 }}
+    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+  >
+    {data?.map((i: any, index: number) => (
+      <div
+        key={index}
+        onClick={() => navigator(`/saintek/news/${i.id}`)}
+        className="group w-full h-[450px] rounded-2xl overflow-hidden bg-[#f4f3f2] hover:bg-[#171719] transition-all duration-500 cursor-pointer flex flex-col"
+      >
+        <div className="h-2/3 relative">
+          <img
+            src={i.image}
+            alt={i.title}
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute top-4 left-4 px-4 py-1 bg-[#8054f3] text-white text-xs rounded-full shadow-md">
+            {i.source?.name || "News"}
+          </div>
+        </div>
+        <div className="h-1/3 flex flex-col gap-2 p-4 text-gray-900 group-hover:text-white transition-colors">
+          <span className="text-sm opacity-70">{i.publishedAt}</span>
+          <h3 className="text-lg font-semibold line-clamp-2 leading-snug">
+            {i.title}
+          </h3>
+        </div>
+      </div>
+    ))}
+  </motion.div>
+);
 
 const SaintekPage = () => {
-  const navigator = useNavigate()
-  const { useGetGNews } = useNewsModule()
-  const { data } = useGetGNews()
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const navigator = useNavigate();
+  const { useGetGNews } = useNewsModule();
+  const { data, isLoading } = useGetGNews();
 
-
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: direction === 'left' ? -200 : 200,
-        behavior: 'smooth'
-      })
-    }
-  }
-
-  console.log(data)
   return (
-    <main className='w-full h-full pt-20 bg-[#fcf9f5]'>
-      <section className='w-full h-full flex flex-col gap-8 px-4'>
-        <div className='w-full h-[90vh] grid grid-cols-3 gap-4 px-20'>
-          {/* Large feature (kiri) */}
-          <div className='col-span-2 relative rounded-3xl overflow-hidden group'>
-            <img
-              src='https://asset.kompas.com/crops/01JNoXR_OzJfy-94LkVRZthWi_0=/0x2:800x536/1200x800/data/photo/2024/09/19/66ebca0e60f61.jpg'
-              alt=''
-              className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
-            />
-            <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-3xl'></div>
-            <div className='absolute inset-0 flex flex-col justify-end p-8 text-white gap-3'>
-              <span className='py-1 px-4 bg-red-200 w-20 flex justify-center rounded-full text-red-500'>
-                News
-              </span>
-              <h1 className='text-3xl md:text-4xl font-bold'>
-                Pendiri dan mantan CEO Marvell Technology, Meninggal Dunia
-              </h1>
-              <p className='text-sm md:text-lg mt-2 max-w-3xl'>
-                Sehat Sutardja, meninggal dunia di usia 63 tahun. Kepergiannya
-                meninggalkan duka mendalam di dunia teknologi dan bisnis.
-              </p>
-            </div>
+    <main className="w-full min-h-screen bg-[#fcf9f5] pt-20">
+      <HeroSection />
+
+      <section className="px-4 md:px-24 mt-10 mb-24 flex flex-col gap-12">
+        <NewsIntro />
+
+        {isLoading && (
+          <div className="w-full flex justify-center py-20 text-gray-500">
+            Memuat berita...
           </div>
+        )}
 
-          {/* Two stacked features (kanan) */}
-          <div className='col-span-1 flex flex-col gap-4'>
-            <div className='h-1/2 relative rounded-3xl overflow-hidden group'>
-              <img
-                src='https://akcdn.detik.net.id/community/media/visual/2025/03/14/ilustrasi-data-center-1741939204417_169.jpeg?w=700&q=90'
-                alt=''
-                className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
-              />
-              <div className='absolute inset-0 bg-black/30 rounded-3xl flex items-end p-4'>
-                <div className='text-white'>
-                  <span className='px-3 py-1 rounded-full bg-[#8054f3] text-sm'>www.detik.com</span>
-                  <h4 className='mt-2 font-semibold'>Ekonomi Digital Melonjak, Indonesia Berebut Jadi Pusat Data Center ASEAN</h4>
-                </div>
-              </div>
-            </div>
-
-            <div className='h-1/2 relative rounded-3xl overflow-hidden group'>
-              <img
-                src='https://akcdn.detik.net.id/community/media/visual/2020/10/28/ilustrasi-koneksi-internet_169.jpeg?w=700&q=90'
-                alt=''
-                className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
-              />
-              <div className='absolute inset-0 bg-black/30 rounded-3xl flex items-end p-4'>
-                <div className='text-white'>
-                  <span className='px-3 py-1 rounded-full bg-[#8054f3] text-sm'>www.detik.com</span>
-                  <h4 className='mt-2 font-semibold'>Isu Koneksi dan Infrastruktur: Dampak terhadap Transformasi Digital</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className='w-full h-full flex gap-6 flex-col px-24 mt-2 mb-24'>
-          <div className='w-full h-full pb-6 flex flex-col gap-4 justify-center items-center'>
-            <div className='w-12 h-6 rounded-full bg-[#8054f3] flex justify-center items-center text-white text-sm'>
-              Blog
-            </div>
-            <h2 className='text-6xl font-bold'>Berita Terbaru</h2>
-            <p className='w-1/2 text-center'>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Blanditiis recusandae totam odio repellat inventore quo quaerat
-              deleniti asperiores nulla libero tempora reiciendis eum omnis
-              cupiditate, voluptatem quasi porro animi dolor!
-            </p>
-          </div>
-
-          <div className='relative w-full flex items-center px-8'>
-            {/* Tombol kiri */}
-            <button
-              title='prev'
-              onClick={() => scroll('left')}
-              className='absolute left-4 z-10 bg-white shadow-md p-2 rounded-full hover:bg-gray-100'
-            >
-              <ChevronLeft className='w-5 h-5' />
-            </button>
-
-            {/* Scrollable menu */}
-            <div
-              ref={scrollRef}
-              className='flex gap-3 overflow-x-auto no-scrollbar scroll-smooth px-14 w-full'
-            >
-              {categories.map((cat, idx) => (
-                <button
-                  key={idx}
-                  className={`flex-shrink-0 px-4 py-2 text-white rounded-full transition 
-          ${colors[idx % colors.length]} hover:brightness-90`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Tombol kanan */}
-            <button
-              title='next'
-              onClick={() => scroll('right')}
-              className='absolute right-4 z-10 bg-white shadow-md p-2 rounded-full hover:bg-gray-100'
-            >
-              <ChevronRight className='w-5 h-5' />
-            </button>
-          </div>
-          <div className='grid grid-cols-3 gap-6'>
-            {data?.map((i: any, index: number) => (
-              <div
-                key={index}
-                onClick={() => navigator(`/saintek/news/${i.id}`)}
-                className='w-full h-[450px] rounded-xl  flex flex-col gap-2 hover:cursor-pointer hover:text-[#F2F2F2] p-2 bg-[#F2F2F2] hover:bg-[#171719] transition-all'
-              >
-                <div className={`w-full h-2/3 rounded-xl `}>
-                  <img
-                    src={i.image}
-                    alt=''
-                    className='w-full h-full rounded-xl'
-                  />
-                  <div className='w-full h-full relative bottom-[100%] px-4 py-4'>
-                    <div className='px-4 py-1 bg-[#8054f3] text-white flex justify-center  w-24 rounded-full'>
-                      halo
-                    </div>
-                  </div>
-                </div>
-                <div className='w-full h-1/3 rounded-xl  flex flex-col gap-1 px-1'>
-                  <p>{i.publishedAt}</p>
-                  <h2 className='text-lg font-bold'>{i.title}</h2>
-                  {/* <p className='text-sm ellipsis-2'>
-                    {i.description}
-                  </p> */}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {!isLoading && data && <NewsGrid data={data} navigator={navigator} />}
       </section>
     </main>
-  )
-}
+  );
+};
 
-export default SaintekPage
+export default SaintekPage;
