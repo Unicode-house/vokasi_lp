@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
   useEffect,
   useLayoutEffect,
@@ -7,7 +7,7 @@ import React, {
   useState,
   type JSX,
 } from "react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import DynamicTextBox from "./dynamicTextBox";
 
 type Side = "left" | "right";
@@ -95,7 +95,7 @@ export default function TwoColFourRowScrollPublic(): JSX.Element {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex justify-center py-24">
+    <div className="min-h-screen w-full flex justify-center py-24 bg-[#fdfaf6]">
       <div
         ref={containerRef}
         className="relative w-full max-w-[1600px] grid grid-cols-2 gap-x-24 gap-y-40 px-16"

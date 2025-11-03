@@ -7,6 +7,7 @@ import HomePage from './pages/home'
 import SaintekPage from './pages/saintek/saintek'
 import { useEffect, useRef, useState } from 'react'
 import DetailsNews from './pages/saintek/detail/detailNews'
+import GalleryMainPage from './layouts/Gallery/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -93,6 +94,7 @@ const menuRefs = useRef<HTMLButtonElement[]>([])
       </nav>
       <Routes>
         <Route path={'/'} element={<HomePage />} />
+        <Route path={'/gallery'} element={<GalleryMainPage/>} />
         <Route path={'/saintek'} element={<SaintekPage />} />
         <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
       </Routes>
