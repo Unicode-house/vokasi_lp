@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 // import AboutSection from '@/layouts/home/about'
 // import AboutPage2 from '@/layouts/home/about2'
 // import CobaGSAP from '@/layouts/home/cobagsap'
-import TwoColFourRowScrollPublic from "@/components/about";
+import AboutPage from "@/components/about"; "@/components/about";
 import HeroLayout from "@/layouts/home/hero";
 
 const HomePage = () => {
@@ -11,8 +12,8 @@ const HomePage = () => {
     >
       <HeroLayout />
 
-      <TwoColFourRowScrollPublic />
-      {/* <CobaGSAP /> */}
+      <AboutPage />
+
       <section></section>
     </main>
   );

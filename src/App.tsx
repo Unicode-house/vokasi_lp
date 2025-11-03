@@ -1,12 +1,10 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
 import SaintekPage from './pages/saintek/saintek'
 import { useEffect, useRef, useState } from 'react'
 import DetailsNews from './pages/saintek/detail/detailNews'
+import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -31,9 +29,19 @@ function App () {
   }, [])
   const [activeIndex, setActiveIndex] = useState(0)
   const [indicatorStyle, setIndicatorStyle] = useState({})
-const menuRefs = useRef<HTMLButtonElement[]>([])
+  const menuRefs = useRef<HTMLButtonElement[]>([])
 
-  const menus = ['Beranda', 'Saintek', 'Sosial', 'Kontak']
+  const menus = ['Beranda', 'Saintek', 'Sosial', 'Kontak', 'Pojok Dakwah']
+  const menuPaths = ['/', '/saintek', '/sosial', '/kontak', '/pojok-dakwah']
+
+  const location = useLocation()
+  useEffect(() => {
+    const idx = menuPaths.findIndex(path =>
+      location.pathname === path ||
+      (path !== '/' && location.pathname.startsWith(path))
+    )
+    setActiveIndex(idx === -1 ? 0 : idx)
+  }, [location.pathname])
 
   useEffect(() => {
     const current = menuRefs.current[activeIndex]
@@ -47,7 +55,7 @@ const menuRefs = useRef<HTMLButtonElement[]>([])
   }, [activeIndex])
 
   return (
-    <BrowserRouter>
+    <>
       <nav className='w-full fixed h-20 z-[999] flex justify-center items-center'>
         <div
           className={`h-full transition-all flex justify-between items-center relative   ${
@@ -75,14 +83,13 @@ const menuRefs = useRef<HTMLButtonElement[]>([])
 
             {menus.map((menu, index) => (
               <a
-                href={menu === 'Beranda' ? '/' : `/${menu.toLowerCase()}`}
+                href={menuPaths[index]}
                 key={index}
                 // ref={el => (menuRefs.current[index] = el)}
-                onClick={() => setActiveIndex(index)}
-                className={`relative z-10 px-4 py-1  font-medium transition-all duration-200 ${
+                className={`relative z-10 px-4 py-1 font-medium transition-all duration-200 ${
                   activeIndex === index
-                    ? 'text-black'
-                    : 'text-gray-200 hover:text-black'
+                    ? 'text-blue-600'
+                    : 'text-gray-300 hover:text-blue-600'
                 }`}
               >
                 {menu}
@@ -95,9 +102,17 @@ const menuRefs = useRef<HTMLButtonElement[]>([])
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/saintek'} element={<SaintekPage />} />
         <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
+        <Route path={'/pojok-dakwah'} element={<PojokDakwahPage />} />
       </Routes>
-    </BrowserRouter>
+    </>
   )
 }
 
-export default App
+// Ubah BrowserRouter jadi Router agar useLocation bisa dipakai di App
+export default function WrappedApp() {
+  return (
+    <Router>
+      <App />
+    </Router>
+  )
+}
