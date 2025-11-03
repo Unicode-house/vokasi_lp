@@ -7,7 +7,7 @@ import React, {
   useState,
   type JSX,
 } from "react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import DynamicTextBox from "../layouts/home/dynamicTextBox";
 
 type Side = "left" | "right";
