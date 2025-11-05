@@ -13,7 +13,7 @@ export default function AboutPage() {
 
 
   return (
-    <div className="min-h-screen w-full bg-[#faf8f2] px-6 md:px-16 lg:px-24 py-20 md:py-32 flex flex-col gap-24 md:gap-32">
+    <div className="min-h-screen w-full bg-[#fcfaf4] px-6 md:px-16 lg:px-24 py-20 md:py-32 flex flex-col gap-24 md:gap-32">
       {/* === Section 1: Tentang Kami === */}
       <section className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-20">
         {/* Gambar */}

@@ -32,8 +32,8 @@ function App () {
   const [indicatorStyle, setIndicatorStyle] = useState({})
   const menuRefs = useRef<HTMLButtonElement[]>([])
 
-  const menus = ['Beranda', 'Saintek', 'Sosial', 'Kontak', 'Pojok Dakwah']
-  const menuPaths = ['/', '/saintek', '/sosial', '/kontak', '/pojok-dakwah']
+  const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
+  const menuPaths = ['/', '/profile', '/blog', '/kontak', '/pojok-dakwah']
 
   const location = useLocation()
   useEffect(() => {
