@@ -3,6 +3,7 @@ import './App.css'
 import HomePage from './pages/home'
 import SaintekPage from './pages/saintek/saintek'
 import { useEffect, useRef, useState } from 'react'
+import Contact from './pages/contact'
 import DetailsNews from './pages/saintek/detail/detailNews'
 import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
 
@@ -101,6 +102,7 @@ function App () {
       <Routes>
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/saintek'} element={<SaintekPage />} />
+        <Route path={'/kontak'} element={<Contact />} />
         <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
         <Route path={'/pojok-dakwah'} element={<PojokDakwahPage />} />
       </Routes>
