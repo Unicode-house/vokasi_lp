@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
@@ -6,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import Contact from './pages/contact'
 import DetailsNews from './pages/saintek/detail/detailNews'
 import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
+import Unduhan from './pages/unduhan/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -33,7 +35,7 @@ function App () {
   const menuRefs = useRef<HTMLButtonElement[]>([])
 
   const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
-  const menuPaths = ['/', '/profile', '/blog', '/kontak', '/pojok-dakwah']
+  const menuPaths = ['/', '/profile', '/blog', '/kontak', '/unduhan', '/pojok-dakwah']
 
   const location = useLocation()
   useEffect(() => {
@@ -104,6 +106,7 @@ function App () {
         <Route path={'/saintek'} element={<SaintekPage />} />
         <Route path={'/kontak'} element={<Contact />} />
         <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
+        <Route path={'/unduhan'} element={<Unduhan/>} />
         <Route path={'/pojok-dakwah'} element={<PojokDakwahPage />} />
       </Routes>
     </>
