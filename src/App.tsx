@@ -4,10 +4,10 @@ import './App.css'
 import HomePage from './pages/home'
 import { useEffect, useRef, useState } from 'react'
 import Contact from './pages/contact'
-import DetailsNews from './pages/saintek/detail/detailNews'
 import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
 import Profile from './pages/profile/page'
 import BlogPage from './pages/blog/page'
+import PageNews from './pages/berita/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -105,7 +105,7 @@ function App () {
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/profile'} element={<Profile />} />
         <Route path={'/blog'} element={<BlogPage />} />
-        <Route path={'/berita'} element={<DetailsNews />} />
+        <Route path={'/berita'} element={<PageNews />} />
         <Route path={'/unduhan'} element={<PojokDakwahPage />} />
         <Route path={'/gallery'} element={<PojokDakwahPage />} />
         <Route path={'/contact'} element={<Contact />} />
