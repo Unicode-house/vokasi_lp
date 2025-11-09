@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
-import SaintekPage from './pages/saintek/saintek'
 import { useEffect, useRef, useState } from 'react'
 import Contact from './pages/contact'
 import DetailsNews from './pages/saintek/detail/detailNews'
 import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
+import Profile from './pages/profile/page'
+import BlogPage from './pages/blog/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -33,7 +35,7 @@ function App () {
   const menuRefs = useRef<HTMLButtonElement[]>([])
 
   const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
-  const menuPaths = ['/', '/profile', '/blog', '/kontak', '/pojok-dakwah']
+  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact']
 
   const location = useLocation()
   useEffect(() => {
@@ -101,10 +103,12 @@ function App () {
       </nav>
       <Routes>
         <Route path={'/'} element={<HomePage />} />
-        <Route path={'/saintek'} element={<SaintekPage />} />
-        <Route path={'/kontak'} element={<Contact />} />
-        <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
-        <Route path={'/pojok-dakwah'} element={<PojokDakwahPage />} />
+        <Route path={'/profile'} element={<Profile />} />
+        <Route path={'/blog'} element={<BlogPage />} />
+        <Route path={'/berita'} element={<DetailsNews />} />
+        <Route path={'/unduhan'} element={<PojokDakwahPage />} />
+        <Route path={'/gallery'} element={<PojokDakwahPage />} />
+        <Route path={'/contact'} element={<Contact />} />
       </Routes>
     </>
   )
