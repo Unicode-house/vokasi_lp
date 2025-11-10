@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
-  const fadeInUp = {
+  const fadeInUp:any = {
     hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
