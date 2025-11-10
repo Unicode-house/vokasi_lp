@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
-import SaintekPage from './pages/saintek/saintek'
 import { useEffect, useRef, useState } from 'react'
-import DetailsNews from './pages/saintek/detail/detailNews'
+import Contact from './pages/contact'
 import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
-import GalleryMainPage from './layouts/Gallery/page'
+import Profile from './pages/profile/page'
+import BlogPage from './pages/blog/page'
+import PageNews from './pages/berita/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -32,8 +34,8 @@ function App () {
   const [indicatorStyle, setIndicatorStyle] = useState({})
   const menuRefs = useRef<HTMLButtonElement[]>([])
 
-  const menus = ['Beranda', 'Saintek', 'Sosial', 'Kontak', 'Pojok Dakwah']
-  const menuPaths = ['/', '/saintek', '/sosial', '/kontak', '/pojok-dakwah']
+  const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
+  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact']
 
   const location = useLocation()
   useEffect(() => {
@@ -101,10 +103,12 @@ function App () {
       </nav>
       <Routes>
         <Route path={'/'} element={<HomePage />} />
-        <Route path={'/gallery'} element={<GalleryMainPage/>} />
-        <Route path={'/saintek'} element={<SaintekPage />} />
-        <Route path={'/saintek/news/:id'} element={<DetailsNews />} />
-        <Route path={'/pojok-dakwah'} element={<PojokDakwahPage />} />
+        <Route path={'/profile'} element={<Profile />} />
+        <Route path={'/blog'} element={<BlogPage />} />
+        <Route path={'/berita'} element={<PageNews />} />
+        <Route path={'/unduhan'} element={<PojokDakwahPage />} />
+        <Route path={'/gallery'} element={<PojokDakwahPage />} />
+        <Route path={'/contact'} element={<Contact />} />
       </Routes>
     </>
   )
