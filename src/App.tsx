@@ -8,6 +8,7 @@ import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
 import Profile from './pages/profile/page'
 import BlogPage from './pages/blog/page'
 import PageNews from './pages/berita/page'
+import GalleryPage from './pages/gallery/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -107,7 +108,7 @@ function App () {
         <Route path={'/blog'} element={<BlogPage />} />
         <Route path={'/berita'} element={<PageNews />} />
         <Route path={'/unduhan'} element={<PojokDakwahPage />} />
-        <Route path={'/gallery'} element={<PojokDakwahPage />} />
+        <Route path={'/gallery'} element={<GalleryPage />} />
         <Route path={'/contact'} element={<Contact />} />
       </Routes>
     </>
