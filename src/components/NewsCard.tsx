@@ -9,45 +9,79 @@ interface NewsItem {
 
 const NewsCard = ({ item }: { item: NewsItem }) => {
   return (
-    <article className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all flex flex-col">
-      {item.image_url ? (
+    <article
+      className="
+        bg-white 
+        rounded-3xl 
+        overflow-hidden 
+        border border-gray-200 
+        hover:shadow-md 
+        transition-all
+      "
+    >
+      {/* IMAGE */}
+      <div className="relative w-full h-72 overflow-hidden">
         <img
           src={item.image_url}
           alt={item.title}
-          className="w-full h-52 object-cover"
           loading="lazy"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).className =
+              'w-full h-full object-contain p-10 bg-gray-100';
+          }}
         />
-      ) : (
-        <div className="w-full h-52 bg-gray-200 flex items-center justify-center text-gray-500">
-          Tidak ada gambar
-        </div>
-      )}
 
-      <div className="flex-1 flex flex-col justify-between p-5">
-        <div>
-          <h2 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-2">
-            {item.title}
-          </h2>
-          <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-            {item.description || "Tidak ada deskripsi"}
-          </p>
-        </div>
+        {/* CATEGORY BADGE */}
+        <span
+          className="
+            absolute top-4 left-4 
+            bg-purple-600 text-white 
+            px-4 py-1 
+            rounded-full text-xs font-semibold
+            shadow-sm capitalize
+          "
+        >
+          {item.source_id}
+        </span>
+      </div>
 
-        <div className="flex justify-between items-center text-sm text-gray-500 mt-auto pt-2 border-t">
-          <span className="capitalize">{item.source_id}</span>
-          <span>{new Date(item.pubDate).toLocaleDateString("id-ID")}</span>
-        </div>
+      {/* CONTENT */}
+      <div className="p-5 flex flex-col h-full">
 
+        {/* DATE */}
+        <span className="text-sm text-gray-500 mb-1">
+          {new Date(item.pubDate).toLocaleDateString("id-ID")}
+        </span>
+
+        {/* TITLE */}
+        <h2 className="font-semibold text-xl text-gray-900 leading-snug mb-2 line-clamp-2">
+          {item.title}
+        </h2>
+
+        {/* DESCRIPTION */}
+        <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">
+          {item.description || "Tidak ada deskripsi tersedia."}
+        </p>
+
+        {/* BUTTON */}
         <a
           href={item.link}
           target="_blank"
-          className="mt-3 inline-block text-center bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:bg-blue-700 transition-colors"
+          className="
+            block w-full text-center 
+            bg-blue-600 text-white 
+            font-semibold py-3 
+            rounded-xl 
+            hover:bg-blue-700 
+            transition-colors
+          "
         >
           Baca Selengkapnya
         </a>
       </div>
     </article>
-  )
-}
+  );
+};
 
-export default NewsCard
+export default NewsCard;
