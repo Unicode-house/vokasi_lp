@@ -8,6 +8,7 @@ import Profile from './pages/profile/page'
 import BlogPage from './pages/blog/page'
 import PageNews from './pages/berita/page'
 import GalleryPage from './pages/gallery/page'
+import Unduhan from './pages/unduhan/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -135,7 +136,7 @@ function App () {
         <Route path={'/profile'} element={<Profile />} />
         <Route path={'/blog'} element={<BlogPage />} />
         <Route path={'/berita'} element={<PageNews />} />
-        <Route path={'/unduhan'} element={<BlogPage />} />
+        <Route path={'/unduhan'} element={<Unduhan />} />
         <Route path={'/gallery'} element={<GalleryPage />} />
         <Route path={'/contact'} element={<Contact />} />
       </Routes>
