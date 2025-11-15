@@ -1,0 +1,27 @@
+{
+    "rewrites": [{
+            "source": "/service-worker.js",
+            "destination": "/service-worker.js"
+        },
+        {
+            "source": "/service-worker.js.map",
+            "destination": "/service-worker.js.map"
+        },
+        {
+            "source": "/sitemap.xml",
+            "destination": "/sitemap.xml"
+        },
+        {
+            "source": "/robots.txt",
+            "destination": "/robots.txt"
+        },
+        {
+            "source": "/favicon.ico",
+            "destination": "/favicon.ico"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}
