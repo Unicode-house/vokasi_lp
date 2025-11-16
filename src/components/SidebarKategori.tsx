@@ -6,7 +6,7 @@ const SidebarKategori = ({ items }: { items: string[] }) => {
         {items.map((cat, idx) => (
           <li
             key={idx}
-            className="text-green-600 hover:text-green-700 cursor-pointer"
+            className="text-blue-600 hover:text-blue-800 cursor-pointer"
           >
             {cat}
           </li>

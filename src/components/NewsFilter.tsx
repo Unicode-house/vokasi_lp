@@ -11,7 +11,7 @@ const NewsFilter = ({ category, setCategory }: NewsFilterProps) => {
   ]
 
   return (
-    <div className="flex flex-wrap gap-3 mb-8">
+    <div className="flex flex-wrap gap-3 mb-8 justify-center">
       {categories.map((c) => (
         <button
           key={c.key}

@@ -9,7 +9,7 @@ const SearchBar = ({ onChange }: SearchBarProps) => {
         type="text"
         placeholder="Cari berita..."
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-green-600 focus:ring-1 focus:ring-green-600 outline-none"
+        className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-600 focus:ring-1 focus:ringblue-600 outline-none"
       />
     </div>
   );

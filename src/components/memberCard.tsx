@@ -34,7 +34,7 @@ const MemberCard: React.FC<Member> = ({
       </div>
 
       {/* LOGO di tengah batas gambar dan konten */}
-      <div className="absolute top-[180px] left-1/2 transform -translate-x-1/2 z-[9999]">
+      <div className="absolute top-[180px] left-1/2 transform -translate-x-1/2 ">
         <div className="bg-white rounded-full shadow-xl w-24 h-24 flex items-center justify-center ring-4 ring-white  transition-all duration-300">
           <img
             src={logo}
