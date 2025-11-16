@@ -1,11 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// 1. PASTIKAN IMPORT INI BENAR
+import { Link } from "react-router-dom";
 import PostCard from "./PostCard";
 
-interface PostListProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  posts: any[];
-}
-
-const PostList = ({ posts }: PostListProps) => {
+const PostList = ({ posts }: any) => {
   if (!posts || posts.length === 0) {
     return (
       <p className="text-gray-500 italic">Tidak ada postingan ditemukan...</p>
@@ -14,9 +12,13 @@ const PostList = ({ posts }: PostListProps) => {
 
   return (
     <div className="flex flex-col gap-10">
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      {" "}
+      {posts.map((post: any) => (
+          <Link key={post.id} to={`/blog/${post.id}`}>
+            <PostCard post={post} />{" "}
+          </Link>
+        )
+      )}{" "}
     </div>
   );
 };
