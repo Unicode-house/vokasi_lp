@@ -72,7 +72,7 @@ export default function BlogPage() {
   const displayedPosts = filteredPosts.slice(start, end);
 
   return (
-    <main className="w-full px-6 lg:px-80 pt-20 pb-16 flex gap-10">
+    <main className="w-full px-6 lg:px-30 pt-20 pb-16 flex gap-10 bg-white">
       {/* LEFT CONTENT */}{" "}
       <div className="w-full lg:w-[70%] flex flex-col gap-10">
         <Breadcrumb items={["Beranda", "Berita"]} />{" "}
@@ -96,7 +96,7 @@ export default function BlogPage() {
         {/* Kita pakai data 'allPosts' untuk recent posts */}
         <SidebarRecent items={allPosts.slice(0, 3)} />{" "}
       </aside>
-      d{" "}
+      {" "}
     </main>
   );
 }

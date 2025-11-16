@@ -9,6 +9,8 @@ import BlogPage from './pages/blog/page'
 import PageNews from './pages/berita/page'
 import GalleryPage from './pages/gallery/page'
 import Unduhan from './pages/unduhan/page'
+import BlogDetailPage from './pages/blog/detail/detail'
+import Footer from './components/footer'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -135,6 +137,8 @@ function App () {
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/profile'} element={<Profile />} />
         <Route path={'/blog'} element={<BlogPage />} />
+        <Route path={'/blog/:id'} element={<BlogDetailPage />} />
+
         <Route path={'/berita'} element={<PageNews />} />
         <Route path={'/unduhan'} element={<Unduhan />} />
         <Route path={'/gallery'} element={<GalleryPage />} />
@@ -149,6 +153,7 @@ export default function WrappedApp() {
   return (
     <Router>
       <App />
+      <Footer />
     </Router>
   )
 }
