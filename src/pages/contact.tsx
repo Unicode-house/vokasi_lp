@@ -10,8 +10,8 @@ const Contact = () => {
   Aos.init({
     duration: 600,
     easing: 'ease-out',
-    once: false,
-    mirror: true
+    once: true,
+    mirror: false
   })
 
   // FIX reload
