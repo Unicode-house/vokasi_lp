@@ -1,6 +1,5 @@
 // import { motion } from "framer-motion";
 
-import Footer from '@/components/footer'
 import { Mails, MapPinHouse, PhoneCall } from 'lucide-react'
 import { useEffect } from 'react'
 import * as Aos from 'aos'
@@ -152,7 +151,7 @@ const Contact = () => {
           ></iframe>
         </div>
       </section>
-      <Footer/>
+
     </section>
   )
 }
