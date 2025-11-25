@@ -1,3 +1,5 @@
+import Footer from "@/components/footer";
+
 const Unduhan = () => {
   return (
     <div className="bg-[#F7F7F7] min-h-screen text-gray-800">
@@ -180,39 +182,7 @@ const Unduhan = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#1e3a8a] text-white mt-10">
-        <div className="max-w-6xl mx-auto px-6 py-8 grid md:grid-cols-4 gap-6 text-sm">
-          <div>
-            <h3 className="font-semibold mb-2">TENTANG DATABASE</h3>
-            <p>
-              Website ini digunakan untuk menyebarluaskan informasi peraturan SMK
-              Vokasi se-Kota Bogor.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">KONTAK</h3>
-            <p>Email: info@smkvokasi-bogor.sch.id</p>
-            <p>Telp: (0251) 123456</p>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">LINK TERKAIT</h3>
-            <ul className="space-y-1">
-              <li><a href="#" className="hover:underline">Dinas Pendidikan</a></li>
-              <li><a href="#" className="hover:underline">SMK Vokasi Bogor</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">MEDIA SOSIAL</h3>
-            <div className="flex space-x-3">
-              <a href="#"><i className="fa-brands fa-instagram"></i></a>
-              <a href="#"><i className="fa-brands fa-tiktok"></i></a>
-            </div>
-          </div>
-        </div>
-        <div className="text-center py-3 text-xs bg-[#152a58]">
-          © 2025 Komunitas SMK Vokasi Kota Bogor. All rights reserved.
-        </div>
-      </footer>
+    <Footer/>
     </div>
   );
 };

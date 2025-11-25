@@ -1,10 +1,22 @@
-import { useState } from "react"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect, useState } from "react"
 import GalleryGrid from "@/components/GalleryGrid"
 import LightboxModal from "@/components/LightboxModal"
+
+import AOS from "aos"
+import "aos/dist/aos.css"
 
 const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState("semua")
+
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      easing: "ease-out-cubic",
+      once: true,
+    })
+  }, [])
 
   const categories = [
     { key: "semua", label: "Semua" },
@@ -13,26 +25,33 @@ const GalleryPage = () => {
     { key: "ekstrakurikuler", label: "Ekstrakurikuler" },
   ]
 
-  // Dummy images dari Unsplash dengan kategori
   const allImages = Array.from({ length: 9 }, (_, i) => ({
-    src: `https://source.unsplash.com/random/800x600?sig=${i}&school,activity`,
+    src: `/background/Dummy.png`,
     category: categories[Math.floor(Math.random() * (categories.length - 1)) + 1].key,
   }))
 
-  // Filter images berdasarkan kategori aktif
-  const images = activeCategory === "semua" 
-    ? allImages 
+  const images = activeCategory === "semua"
+    ? allImages
     : allImages.filter(img => img.category === activeCategory)
 
   return (
     <main className="min-h-screen bg-[#fdfcfb] pt-20">
       <section className="max-w-7xl mx-auto px-4 py-10">
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+        
+        {/* Judul */}
+        <h1 
+          className="text-4xl font-bold text-center mb-8 text-gray-800"
+          data-aos="fade-down"
+        >
           Galeri Kegiatan
         </h1>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap gap-3 mb-8 justify-center">
+        <div 
+          className="flex flex-wrap gap-3 mb-8 justify-center"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           {categories.map((cat) => (
             <button
               key={cat.key}
@@ -48,10 +67,13 @@ const GalleryPage = () => {
           ))}
         </div>
 
-        <GalleryGrid 
-          images={images.map(img => img.src)} 
-          onSelect={setSelectedImage} 
-        />
+        {/* Grid Gallery */}
+        <div data-aos="fade-up" data-aos-delay="350">
+          <GalleryGrid 
+            images={images.map(img => img.src)} 
+            onSelect={setSelectedImage} 
+          />
+        </div>
 
         {selectedImage && (
           <LightboxModal
