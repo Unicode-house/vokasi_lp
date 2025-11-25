@@ -1,9 +1,8 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 const Contact = () => {
   return (
-    <section id="kontak" className="py-20 bg-[#fcfaf4]">
+    <section id="kontak" className="py-20 bg-[#F7F7F7]">
       <div className="container mx-auto px-6 md:px-12 lg:px-24">
         {/* Heading Section */}
         <motion.div

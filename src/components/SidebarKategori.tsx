@@ -1,19 +1,37 @@
-const SidebarKategori = ({ items }: { items: string[] }) => {
+"use client";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+interface Props {
+  items: string[];
+  onSelect?: (value: string) => void;
+}
+
+export default function SidebarKategori({ items, onSelect }: Props) {
   return (
-    <div>
-      <h3 className="font-semibold text-lg mb-3">Post Kategori</h3>
-      <ul className="flex flex-col gap-3">
-        {items.map((cat, idx) => (
-          <li
-            key={idx}
-            className="text-green-600 hover:text-green-700 cursor-pointer"
+    <div className="flex flex-col gap-4">
+      <h2 className="font-semibold text-lg text-gray-800">Post Kategori</h2>
+
+      <div className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <button
+            key={item}
+            onClick={() => onSelect?.(item)}
+            className="
+              px-3 py-1 
+              rounded-full 
+              border border-blue-400 
+              text-blue-600 
+              hover:bg-blue-600 
+              hover:text-white 
+              transition-all duration-200
+              text-sm
+            "
           >
-            {cat}
-          </li>
+            {item}
+          </button>
         ))}
-      </ul>
+      </div>
     </div>
   );
-};
-
-export default SidebarKategori;
+}

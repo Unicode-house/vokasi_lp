@@ -8,7 +8,7 @@ const PostCard = ({ post }: { post: { image: string; title: string; category: st
       />
 
       <div className="flex flex-col justify-between">
-        <span className="bg-green-600 text-white px-3 py-1 rounded-full text-xs w-fit">
+        <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs w-fit">
           {post.category}
         </span>
 

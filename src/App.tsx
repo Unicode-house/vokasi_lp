@@ -37,7 +37,7 @@ function App () {
   // indicator/menuRefs removed to keep navbar simple
 
   const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
-  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact']
+  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact'] 
 
   const location = useLocation()
   useEffect(() => {
@@ -67,9 +67,9 @@ function App () {
     <>
       <nav className='w-full fixed h-20 z-[999] flex justify-center items-center'>
         <div
-          className={`h-full transition-all flex justify-between items-center relative ${
+          className={`h-full transition-all flex justify-between items-center relative   ${
             isScrolled
-              ? 'w-full h-16 bg-white/90 top-0 shadow-sm'
+              ? 'w-4/5 h-16 bg-white/30 top-4 rounded-xl shadow-xl backdrop-blur-sm'
               : 'w-full bg-transparent top-0'
           } px-6 py-4`}
         >
