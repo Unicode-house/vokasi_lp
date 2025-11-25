@@ -6,9 +6,7 @@ export default function Footer () {
         {/* Left Logo + Text */}
         <div className='w-1/3'>
           <div className='flex items-center gap-3'>
-            <div className='w-10 h-10 rounded-full bg-[#6f50f4] flex items-center justify-center text-white text-xl font-bold'>
-              D
-            </div>
+            <img src="/logos/logo_delta.png" alt="" className="w-10 h-10"/>
             <h2 className='text-xl font-semibold'>DeltaKv</h2>
           </div>
 
