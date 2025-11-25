@@ -1,105 +1,89 @@
-"use client";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
 
 import { useState, useEffect } from "react";
 
-import Breadcrumb from "@/components/Breadcrumb";
-import SearchBar from "@/components/SearchBar";
-import Pagination from "@/components/Pagination";
-import PostList from "@/components/PostList";
-import SidebarKategori from "@/components/SidebarKategori";
-import SidebarRecent from "@/components/SidebarRecent";
-
-// Kategori statis
-const categories = [
-  "Kegiatan Sekolah",
-  "Ekstrakurikuler",
-  "Lomba",
-  "Prestasi",
-  "Pengumuman",
-  "Artikel Umum",
-];
+const API_KEY = "MASUKKAN_API_KEY_ASLI_DI_SINI"; // ← WAJIB GANTI
 
 export default function BlogPage() {
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const itemsPerPage = 6;
-
-  // Ambil data dari DummyJSON
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
+      setErrorMsg("");
+
       try {
-        const res = await fetch("https://dummyjson.com/products?limit=20");
+        const res = await fetch(
+          `https://newsdata.io/api/1/news?apikey=${API_KEY}&q=sekolah&language=id`
+        );
+
         const data = await res.json();
 
-        const postsWithExtras = data.products.map((post: any) => ({
-          ...post,
-          id: post.id,
+        // ❗ CEK APakah API ERROR
+        if (!data.results) {
+          setErrorMsg(data.message || "API error. Cek API KEY Anda.");
+          setLoading(false);
+          return;
+        }
+
+        const formatted = data.results.map((post: any, i: number) => ({
+          id: i + 1,
           title: post.title,
-          image: post.thumbnail,
-          author: post.brand,
-          category: post.category,
+          image: post.image_url || "https://picsum.photos/seed/noimg/800/500",
+          author: post.creator?.[0] || "Admin",
+          category: post.category?.[0] || "Berita Umum",
+          date: post.pubDate,
+          content: post.description,
         }));
 
-        setAllPosts(postsWithExtras);
+        setAllPosts(formatted);
       } catch (error) {
-        console.error("Gagal fetch posts:", error);
+        setErrorMsg("Gagal mengambil data dari server.");
       }
+
       setLoading(false);
     };
 
     fetchPosts();
   }, []);
 
-  // 🔎 Search berdasarkan title, brand, dan category
-  const filteredPosts = allPosts.filter((post: any) => {
-    const query = search.toLowerCase();
-
-    return (
-      post.title?.toLowerCase().includes(query) ||
-      post.brand?.toLowerCase().includes(query) ||
-      post.category?.toLowerCase().includes(query)
-    );
-  });
-
-  const start = (page - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const displayedPosts = filteredPosts.slice(start, end);
-
   return (
-    <main className="w-full px-6 lg:px-80 pt-20 pb-16 flex gap-10 bg-[#fcfaf4] min-h-screen ">
+    <main className="p-10">
+      <h1 className="text-3xl font-bold mb-6">Berita Sekolah</h1>
 
-      {/* LEFT CONTENT */}
-      <div className="w-full lg:w-[70%] flex flex-col gap-10">
-        <Breadcrumb items={["Beranda", "Berita"]}  />
-        <h1 className="text-3xl font-bold text-blue-600">Semua Berita</h1>
+      {loading && <p>Loading...</p>}
 
-        {loading ? (
-          <p className="text-blue-600">Loading artikel...</p>
-        ) : (
-          <PostList posts={displayedPosts} />
-        )}
+      {errorMsg && (
+        <p className="text-red-600 font-medium bg-red-100 px-4 py-3 rounded-lg">
+          ❌ {errorMsg}
+        </p>
+      )}
 
-        <Pagination
-          currentPage={page}
-          totalItems={filteredPosts.length}
-          itemsPerPage={itemsPerPage}
-          onPageChange={setPage}
-        />
-      </div>
+      {!loading && !errorMsg && allPosts.length === 0 && (
+        <p className="text-gray-600 italic">Tidak ada berita...</p>
+      )}
 
-      {/* RIGHT SIDEBAR */}
-      <aside className="w-[30%] hidden lg:flex flex-col gap-10">
-        <SearchBar onChange={setSearch} />
-        <SidebarKategori items={categories} />
-        <SidebarRecent items={allPosts.slice(0, 3)} />
-      </aside>
-
+      {!loading && allPosts.length > 0 && (
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {allPosts.map((p) => (
+            <li
+              key={p.id}
+              className="p-4 bg-white shadow rounded-xl border border-gray-200"
+            >
+              <img
+                src={p.image}
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
+              <h2 className="font-bold text-lg">{p.title}</h2>
+              <p className="text-gray-600 mt-2 text-sm">{p.content}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   );
 }
