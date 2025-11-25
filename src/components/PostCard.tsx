@@ -1,10 +1,10 @@
 const PostCard = ({ post }: { post: { image: string; title: string; category: string; author: string } }) => {
   return (
-    <div className="flex gap-5 bg-white rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all">
+    <div className="flex flex-col md:flex-row gap-5 bg-white rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all">
       <img
         src={post.image}
         alt={post.title}
-        className="w-44 h-32 rounded-xl object-cover"
+        className="w-full h-48 md:w-44 md:h-32 rounded-xl object-cover"
       />
 
       <div className="flex flex-col justify-between">
