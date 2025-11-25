@@ -57,13 +57,13 @@ export default function Footer () {
         {/* Social icons */}
         <div className='flex items-center gap-4'>
           <div className='w-10 h-10 rounded-full bg-white border flex items-center justify-center text-[#6f50f4] text-lg cursor-pointer'>
-            ✖
+            <img src='/icons/fb.png' alt='' />
           </div>
           <div className='w-10 h-10 rounded-full bg-white border flex items-center justify-center text-[#6f50f4] text-lg cursor-pointer'>
-            ⓕ
+            <img src='/icons/ig.png' alt='' />
           </div>
           <div className='w-10 h-10 rounded-full bg-white border flex items-center justify-center text-[#6f50f4] text-lg cursor-pointer'>
-            ⓘ
+            <img src='/icons/x.png' alt='' />
           </div>
         </div>
       </div>
