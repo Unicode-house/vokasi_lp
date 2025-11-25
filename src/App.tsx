@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Contact from './pages/contact'
-import PojokDakwahPage from './pages/pojok-dakwah/page' // pastikan file ini ada
 import Profile from './pages/profile/page'
 import BlogPage from './pages/blog/page'
 import PageNews from './pages/berita/page'
+import GalleryPage from './pages/gallery/page'
+import Unduhan from './pages/unduhan/page'
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -31,11 +32,10 @@ function App () {
     }
   }, [])
   const [activeIndex, setActiveIndex] = useState(0)
-  const [indicatorStyle, setIndicatorStyle] = useState({})
-  const menuRefs = useRef<HTMLButtonElement[]>([])
+  // indicator/menuRefs removed to keep navbar simple
 
   const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
-  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact']
+  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact'] 
 
   const location = useLocation()
   useEffect(() => {
@@ -46,16 +46,20 @@ function App () {
     setActiveIndex(idx === -1 ? 0 : idx)
   }, [location.pathname])
 
+  // close mobile menu on navigation
+  const [mobileOpen, setMobileOpen] = useState(false)
   useEffect(() => {
-    const current = menuRefs.current[activeIndex]
-    if (current) {
-      const { offsetLeft, offsetWidth } = current
-      setIndicatorStyle({
-        left: offsetLeft,
-        width: offsetWidth
-      })
+    setMobileOpen(false)
+  }, [location.pathname])
+
+  // close mobile menu when resizing to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMobileOpen(false)
     }
-  }, [activeIndex])
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   return (
     <>
@@ -73,31 +77,57 @@ function App () {
           </div>
           
           <div className='w-2/3 flex items-center justify-end gap-6 relative'>
-            {/* Kotak gradasi di belakang menu */}
-            <div
-              className='absolute h-8 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 ease-in-out'
-              style={{
-                ...indicatorStyle,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 0
-              }}
-            ></div>
+            {/* Desktop menu - simple text links */}
+            <div className='hidden md:flex items-center gap-6'>
+              {menus.map((menu, index) => (
+                <Link
+                  to={menuPaths[index]}
+                  key={index}
+                  className={`relative z-10 px-4 py-1 font-medium transition-colors duration-200 ${
+                    activeIndex === index
+                      ? 'text-blue-600'
+                      : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  {menu}
+                </Link>
+              ))}
+            </div>
 
-            {menus.map((menu, index) => (
-              <a
-                href={menuPaths[index]}
-                key={index}
-                // ref={el => (menuRefs.current[index] = el)}
-                className={`relative z-10 px-4 py-1 font-medium transition-all duration-200 ${
-                  activeIndex === index
-                    ? 'text-blue-600'
-                    : 'text-gray-300 hover:text-blue-600'
-                }`}
+            {/* Mobile: burger button */}
+            <div className='md:hidden flex items-center'>
+              <button
+                aria-label='Toggle menu'
+                aria-expanded={mobileOpen}
+                onClick={() => setMobileOpen(v => !v)}
+                className='relative z-20 p-2 rounded-md hover:bg-gray-100/20'
               >
-                {menu}
-              </a>
-            ))}
+                {/* simple burger icon */}
+                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path d={mobileOpen ? 'M6 6L18 18M6 18L18 6' : 'M3 6h18M3 12h18M3 18h18'} stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Mobile dropdown menu */}
+            {mobileOpen && (
+              <div className='md:hidden absolute right-4 top-full mt-3 w-52 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg z-30 overflow-hidden'>
+                <div className='flex flex-col'>
+                  {menus.map((menu, index) => (
+                    <Link
+                      to={menuPaths[index]}
+                      key={index}
+                      onClick={() => setMobileOpen(false)}
+                      className={`block px-4 py-3 text-sm font-medium border-b last:border-b-0 ${
+                        activeIndex === index ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'
+                      }`}
+                    >
+                      {menu}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </nav>
@@ -106,8 +136,8 @@ function App () {
         <Route path={'/profile'} element={<Profile />} />
         <Route path={'/blog'} element={<BlogPage />} />
         <Route path={'/berita'} element={<PageNews />} />
-        <Route path={'/unduhan'} element={<PojokDakwahPage />} />
-        <Route path={'/gallery'} element={<PojokDakwahPage />} />
+        <Route path={'/unduhan'} element={<Unduhan />} />
+        <Route path={'/gallery'} element={<GalleryPage />} />
         <Route path={'/contact'} element={<Contact />} />
       </Routes>
     </>

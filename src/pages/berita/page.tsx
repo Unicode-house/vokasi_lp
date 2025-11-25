@@ -36,7 +36,7 @@ const BeritaPage = () => {
 
   if (isLoading)
     return (
-      <main className="min-h-screen bg-[#fcfaf4] px-6 py-10">
+      <main className="min-h-screen bg-[#F7F7F7] px-6 py-10">
         <div className="flex flex-col justify-center items-center">
         <h1 className="text-3xl font-bold mb-6 text-gray-900">
           📰 Berita Terkini
@@ -56,23 +56,20 @@ const BeritaPage = () => {
     );
 
   return (
-    <main className="min-h-screen bg-[#fcfaf4] px-6 py-10">
+    <main className="min-h-screen bg-[#F7F7F7] px-6 py-10">
       <div className="flex flex-col mt-10">
         <div className="flex flex-col justify-center items-center">
-        <h1
-          className="text-3xl font-bold mb-6 text-gray-900"
-          data-aos="fade-right"
-        >
+        <h1 className="text-3xl font-bold mb-6 text-gray-900">
           📰 Berita Terkini
         </h1>
-
-        <NewsFilter category={category} setCategory={setCategory} />
-
-        </div>
-
-        <section data-aos="fade-up">
-          <NewsGrid news={news || []} />
-        </section>
+ 
+         <NewsFilter category={category} setCategory={setCategory} />
+ 
+         </div>
+ 
+         <section data-aos="fade-up">
+           <NewsGrid news={news || []} />
+         </section>
       </div>
     </main>
   );

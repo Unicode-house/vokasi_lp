@@ -15,7 +15,7 @@ import MemberDelta from '@/layouts/home/member'
 const HomePage = () => {
   return (
     <main
-      className="w-full min-h-screen bg-[#fcfaf4]"
+      className="w-full min-h-screen bg-[#F7F7F7]"
       // className='w-full min-h-screen bg-[#fcfaf4]'
     >
       <HeroLayout />
