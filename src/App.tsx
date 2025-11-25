@@ -17,7 +17,7 @@ import GalleryPage from './pages/gallery/page'
 import Unduhan from './pages/unduhan/page'
 import BlogDetailPage from './pages/blog/detail/detail'
 import Footer from './components/footer'
-import Footer from './components/footer'
+
 
 function App () {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -196,7 +196,6 @@ export default function WrappedApp () {
   return (
     <Router>
       <App />
-      <Footer />
       <Footer />
 
     </Router>

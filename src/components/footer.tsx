@@ -17,7 +17,7 @@ export default function Footer () {
         </div>
 
         {/* Useful Links */}
-        <div className='flex gap-16 w-2/3 justify-center'>
+        <div className='flex gap-16 w-2/3 md:justify-center'>
           <div>
             <h3 className='font-semibold mb-3'>Menu Utama</h3>
             <ul className='space-y-2 text-gray-600'>
