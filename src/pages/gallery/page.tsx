@@ -25,7 +25,7 @@ const GalleryPage = () => {
     { key: "ekstrakurikuler", label: "Ekstrakurikuler" },
   ]
 
-  const allImages = Array.from({ length: 9 }, (_, i) => ({
+  const allImages = Array.from({ length: 9 }, (_,) => ({
     src: `/background/Dummy.png`,
     category: categories[Math.floor(Math.random() * (categories.length - 1)) + 1].key,
   }))

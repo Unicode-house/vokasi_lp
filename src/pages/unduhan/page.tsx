@@ -1,4 +1,3 @@
-import Footer from "@/components/footer";
 
 const Unduhan = () => {
   return (
@@ -180,9 +179,6 @@ const Unduhan = () => {
           ></iframe>
         </div>
       </section>
-
-      {/* FOOTER */}
-    <Footer/>
     </div>
   );
 };
