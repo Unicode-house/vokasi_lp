@@ -157,13 +157,16 @@ const grouped = Array.from({ length: 5 }, (_, i) =>
 
 
   return (
-    <section className='bg-[#fdfaf6] py-20 flex flex-col items-center text-center'>
+    <section className='bg-[#f7f7f7] py-20 flex flex-col items-center text-center'>
   {/* Judul Elegan */}
   <div className='mb-10'>
-    <h2 className='text-4xl md:text-5xl font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500'>
-      Anggota Komunitas Kami
-    </h2>
-    <div className='h-[2px] w-24 mx-auto mt-4 bg-gradient-to-r from-gray-400 via-gray-800 to-gray-400 rounded-full'></div>
+<h2 className="text-4xl md:text-5xl font-light tracking-wide 
+   text-gray-700 relative">
+  <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 bg-clip-text text-transparent">
+    Anggota Komunitas Kami
+  </span>
+</h2>
+    <div className='h-[2px] z-0 w-24 mx-auto mt-4 bg-gradient-to-r from-gray-400 via-gray-800 to-gray-400 rounded-full'></div>
     <p className='text-gray-500 mt-4 text-base md:text-lg italic'>
       35 Sekolah Menengah Kejuruan Bogor yang berkolaborasi aktif.
     </p>

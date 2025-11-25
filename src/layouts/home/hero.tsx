@@ -56,7 +56,22 @@ const HeroLayout = () => {
   }, [])
 
   return (
-    <section className="min-h-screen md:bg-bottom bg-bottom-right flex flex-col w-full bg-cover justify-center items-center text-center bg-[url('/bg-home2.png')] relative overflow-hidden px-4">
+<section
+  className="min-h-screen md:bg-bottom bg-bottom-right flex flex-col w-full bg-cover justify-center items-center text-center relative overflow-hidden px-4"
+  style={{
+    background: `
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(103,102,246,0.45) 0%,
+        rgba(103,102,246,0.18) 8%,
+        rgba(103,102,246,0.07) 14%,
+        #f7f7f7 22%
+      )
+    `
+  }}
+>
+
+
       <p className='text-gray-400 uppercase tracking-widest text-sm mb-3 flex flex-wrap'>
         {letters.map((char, index) => (
           <motion.span

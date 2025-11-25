@@ -4,7 +4,8 @@ interface SearchBarProps {
 
 const SearchBar = ({ onChange }: SearchBarProps) => {
   return (
-    <div className="w-full">
+    <div className="flex w-full">
+      
       <input
         type="text"
         placeholder="Cari berita..."

@@ -1,89 +1,157 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from "react";
 
-const API_KEY = "MASUKKAN_API_KEY_ASLI_DI_SINI"; // ← WAJIB GANTI
+import Breadcrumb from "@/components/Breadcrumb";
+import SearchBar from "@/components/SearchBar";
+import Pagination from "@/components/Pagination";
+import PostList from "@/components/PostList";
+import SidebarKategori from "@/components/SidebarKategori";
+import SidebarRecent from "@/components/SidebarRecent";
+
+// API key NewsData.io (sesuaikan dengan env milikmu)
+const API_KEY = import.meta.env.VITE_API_NEWS_IO_KEY as string;
+
+// Kategori statis
+const categories = [
+  "Kegiatan Sekolah",
+  "Ekstrakurikuler",
+  "Lomba",
+  "Prestasi",
+  "Pengumuman",
+  "Artikel Umum",
+];
+
+// Helper untuk memetakan berita edukasi ke kategori sidebar
+const mapEducationCategory = (title?: string, description?: string): string => {
+  const text = `${title || ""} ${description || ""}`.toLowerCase();
+
+  if (/lomba|kompetisi|olimpiade|turnamen|festival/.test(text)) {
+    return "Lomba";
+  }
+  if (/ekstrakurikuler|ekskul|pramuka|paskibra|osis|club|klub/.test(text)) {
+    return "Ekstrakurikuler";
+  }
+  if (/pengumuman|diberitahukan|pemberitahuan|info penting/.test(text)) {
+    return "Pengumuman";
+  }
+  if (/prestasi|juara|pemenang|penghargaan|award/.test(text)) {
+    return "Prestasi";
+  }
+  if (
+    /sekolah|kelas|guru|siswa|mahasiswa|kampus|universitas|kuliah|pendidikan/.test(
+      text
+    )
+  ) {
+    return "Kegiatan Sekolah";
+  }
+
+  return "Artikel Umum";
+};
 
 export default function BlogPage() {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
 
+  const itemsPerPage = 6;
+
+  // Ambil data berita edukasi dari NewsData.io
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      setErrorMsg("");
-
       try {
-        const res = await fetch(
-          `https://newsdata.io/api/1/news?apikey=${API_KEY}&q=sekolah&language=id`
-        );
+        // Base query hanya seputar EDUKASI
+        const baseQuery =
+          "pendidikan OR sekolah OR siswa OR guru OR universitas OR kampus OR pelajar";
 
+        const url = new URL("https://newsdata.io/api/1/news");
+        url.searchParams.set("apikey", API_KEY);
+        url.searchParams.set("q", baseQuery);
+        url.searchParams.set("country", "id");
+        url.searchParams.set("language", "id");
+        url.searchParams.set("category", "education");
+
+        const res = await fetch(url.toString());
         const data = await res.json();
 
-        // ❗ CEK APakah API ERROR
-        if (!data.results) {
-          setErrorMsg(data.message || "API error. Cek API KEY Anda.");
-          setLoading(false);
-          return;
-        }
+        const postsWithExtras =
+          (data.results || []).map((post: any) => {
+            const categoryLabel = mapEducationCategory(
+              post.title,
+              post.description
+            );
 
-        const formatted = data.results.map((post: any, i: number) => ({
-          id: i + 1,
-          title: post.title,
-          image: post.image_url || "https://picsum.photos/seed/noimg/800/500",
-          author: post.creator?.[0] || "Admin",
-          category: post.category?.[0] || "Berita Umum",
-          date: post.pubDate,
-          content: post.description,
-        }));
+            return {
+              ...post,
+              id: post.article_id,
+              title: post.title,
+              image: post.image_url,
+              author: post.source_id,
+              // brand dipakai di filter, samakan dengan source
+              brand: post.source_id,
+              // kategori disesuaikan ke kategori sidebar
+              category: categoryLabel,
+            };
+          }) ?? [];
 
-        setAllPosts(formatted);
+        setAllPosts(postsWithExtras);
       } catch (error) {
-        setErrorMsg("Gagal mengambil data dari server.");
+        console.error("Gagal fetch posts:", error);
       }
-
       setLoading(false);
     };
 
     fetchPosts();
   }, []);
 
+  // 🔎 Search berdasarkan title, brand (source_id), dan category lokal
+  const filteredPosts = allPosts.filter((post: any) => {
+    const query = search.toLowerCase();
+
+    return (
+      post.title?.toLowerCase().includes(query) ||
+      post.brand?.toLowerCase().includes(query) ||
+      post.category?.toLowerCase().includes(query)
+    );
+  });
+
+  const start = (page - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const displayedPosts = filteredPosts.slice(start, end);
+
   return (
-    <main className="p-10">
-      <h1 className="text-3xl font-bold mb-6">Berita Sekolah</h1>
+    <main className="w-full px-6 lg:px-50 pt-20 pb-16 flex gap-10 bg-[#F7F7F7] min-h-screen ">
 
-      {loading && <p>Loading...</p>}
+      {/* LEFT CONTENT */}
+      <div className="w-full lg:w-[70%] flex flex-col gap-10">
+        <Breadcrumb items={["Beranda", "Berita"]} />
+        <h1 className="text-3xl font-bold text-blue-600">Semua Berita</h1>
 
-      {errorMsg && (
-        <p className="text-red-600 font-medium bg-red-100 px-4 py-3 rounded-lg">
-          ❌ {errorMsg}
-        </p>
-      )}
+        {loading ? (
+          <p className="text-blue-600">Loading artikel...</p>
+        ) : (
+          <PostList posts={displayedPosts} />
+        )}
 
-      {!loading && !errorMsg && allPosts.length === 0 && (
-        <p className="text-gray-600 italic">Tidak ada berita...</p>
-      )}
+        <Pagination
+          currentPage={page}
+          totalItems={filteredPosts.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={setPage}
+        />
+      </div>
 
-      {!loading && allPosts.length > 0 && (
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {allPosts.map((p) => (
-            <li
-              key={p.id}
-              className="p-4 bg-white shadow rounded-xl border border-gray-200"
-            >
-              <img
-                src={p.image}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h2 className="font-bold text-lg">{p.title}</h2>
-              <p className="text-gray-600 mt-2 text-sm">{p.content}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* RIGHT SIDEBAR */}
+      <aside className="w-[34%] mt-30 p-[2%] h-[100%] rounded-2xl shadow bg-white hidden lg:flex flex-col gap-10">
+        <SearchBar onChange={setSearch} />
+        <SidebarKategori items={categories} />
+        <SidebarRecent items={allPosts.slice(0, 3)} />
+      </aside>
+
     </main>
   );
 }

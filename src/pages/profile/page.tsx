@@ -56,7 +56,7 @@ const Profile = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-[#fcfaf4] flex flex-col items-center">
+    <div className="w-full min-h-screen bg-[#F7F7F7] flex flex-col items-center">
       {/* ===== Banner Section ===== */}
       <div className="w-full h-[350px] relative overflow-hidden">
         <img
