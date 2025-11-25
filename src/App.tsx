@@ -1,5 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+  Link
+} from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/home'
 import { useEffect, useState } from 'react'
@@ -10,6 +16,7 @@ import PageNews from './pages/berita/page'
 import GalleryPage from './pages/gallery/page'
 import Unduhan from './pages/unduhan/page'
 import BlogDetailPage from './pages/blog/detail/detail'
+import Footer from './components/footer'
 import Footer from './components/footer'
 
 function App () {
@@ -36,14 +43,31 @@ function App () {
   const [activeIndex, setActiveIndex] = useState(0)
   // indicator/menuRefs removed to keep navbar simple
 
-  const menus = ['Beranda', 'Profile', 'Blog', 'Berita', 'Unduhan', 'Gallery', 'Kontak']
-  const menuPaths = ['/', '/profile', '/blog', '/berita', '/unduhan', '/gallery', '/contact'] 
+  const menus = [
+    'Beranda',
+    'Profile',
+    'Blog',
+    'Berita',
+    'Unduhan',
+    'Gallery',
+    'Kontak'
+  ]
+  const menuPaths = [
+    '/',
+    '/profile',
+    '/blog',
+    '/berita',
+    '/unduhan',
+    '/gallery',
+    '/contact'
+  ]
 
   const location = useLocation()
   useEffect(() => {
-    const idx = menuPaths.findIndex(path =>
-      location.pathname === path ||
-      (path !== '/' && location.pathname.startsWith(path))
+    const idx = menuPaths.findIndex(
+      path =>
+        location.pathname === path ||
+        (path !== '/' && location.pathname.startsWith(path))
     )
     setActiveIndex(idx === -1 ? 0 : idx)
   }, [location.pathname])
@@ -77,7 +101,7 @@ function App () {
             <img src='/logos/logo_delta.png' alt='' className='w-12 h-12' />
             <span className='text-2xl font-semibold'>Delta</span>
           </div>
-          
+
           <div className='w-2/3 flex items-center justify-end gap-6 relative'>
             {/* Desktop menu - simple text links */}
             <div className='hidden md:flex items-center gap-6'>
@@ -106,8 +130,24 @@ function App () {
                 className='relative z-20 p-2 rounded-md hover:bg-gray-100/20'
               >
                 {/* simple burger icon */}
-                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <path d={mobileOpen ? 'M6 6L18 18M6 18L18 6' : 'M3 6h18M3 12h18M3 18h18'} stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/>
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    d={
+                      mobileOpen
+                        ? 'M6 6L18 18M6 18L18 6'
+                        : 'M3 6h18M3 12h18M3 18h18'
+                    }
+                    stroke='currentColor'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
                 </svg>
               </button>
             </div>
@@ -122,7 +162,9 @@ function App () {
                       key={index}
                       onClick={() => setMobileOpen(false)}
                       className={`block px-4 py-3 text-sm font-medium border-b last:border-b-0 ${
-                        activeIndex === index ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'
+                        activeIndex === index
+                          ? 'text-blue-600'
+                          : 'text-gray-700 hover:text-blue-600'
                       }`}
                     >
                       {menu}
@@ -150,11 +192,13 @@ function App () {
 }
 
 // Ubah BrowserRouter jadi Router agar useLocation bisa dipakai di App
-export default function WrappedApp() {
+export default function WrappedApp () {
   return (
     <Router>
       <App />
       <Footer />
+      <Footer />
+
     </Router>
   )
 }
