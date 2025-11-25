@@ -6,7 +6,10 @@ export const localPosts = [
     brand: "Penulis Internal",
     author: "Dr. Iskandar, M.Pd.",
     image: "/assets/abqory.png", // opsional
-    detail: `“Guru Badut dan Guru yang Dianut: Refleksi Kritis atas Fenomena Kepemimpinan dan Keteladanan Guru dalam Dunia Pendidikan”
+    description:
+      "Refleksi kritis atas fenomena guru badut dan guru yang dianut dalam dunia pendidikan modern.",
+    content: `
+“Guru Badut dan Guru yang Dianut: Refleksi Kritis atas Fenomena Kepemimpinan dan Keteladanan Guru dalam Dunia Pendidikan”
 Oleh : Dr. Iskandar, M.Pd.
 
 Abstrak
@@ -47,12 +50,7 @@ III.KESIMPULAN
 Fenomena “guru badut” dan “guru yang dianut” menggambarkan pertarungan antara pencitraan dan keteladanan dalam dunia pendidikan modern. Guru badut adalah cermin dari krisis makna pendidikan ketika guru lebih berupaya tampil menarik daripada bermakna. Sebaliknya, guru yang dianut adalah simbol kebangkitan moral dan intelektual sosok yang diikuti bukan karena penampilannya, tetapi karena ketulusan, kebijaksanaan, dan keteladanan hidupnya.
 Pendidikan sejati tidak memerlukan guru yang lucu, tetapi guru yang menyentuh hati; tidak cukup dengan guru yang menghibur, tetapi guru yang menginspirasi. Dalam bahasa sederhana:
 
-“Guru badut membuat siswa tertawa, guru yang dianut membuat siswa berubah.”`,
-    description:
-      "Refleksi kritis atas fenomena guru badut dan guru yang dianut dalam dunia pendidikan modern.",
-    content: `
-Fenomena “guru badut” dan “guru yang dianut” merefleksikan dua paradigma ekstrem...
-(isi lengkap dari file)
+“Guru badut membuat siswa tertawa, guru yang dianut membuat siswa berubah.”
     `,
     date: "2025-01-01",
   },

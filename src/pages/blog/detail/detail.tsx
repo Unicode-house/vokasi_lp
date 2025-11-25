@@ -84,11 +84,23 @@ export default function BlogDetailPage() {
           />
         </div>
 
-        <article className="prose prose-lg max-w-none text-gray-700 leading-relaxed mt-4">
+        <article className="prose prose-lg max-w-none text-gray-700 flex flex-col gap-8 leading-relaxed mt-4">
           <p className="text-xl leading-relaxed">{post.description}</p>
           <p>
             Stok: {post.stock} | Rating: {post.rating} / 5
           </p>
+          <div
+            className="prose prose-lg max-w-none text-justify"
+            dangerouslySetInnerHTML={{
+              __html: `
+      <embed
+        src="/assets/gurubadut.pdf"
+        type="application/pdf"
+        style="width:100%; height:100vh;"
+      />
+    `,
+            }}
+          />
         </article>
       </div>
 
@@ -97,10 +109,6 @@ export default function BlogDetailPage() {
         {/* <SidebarKategori items={...} /> */}
         <SidebarRecent items={recentPosts} />
       </aside>
-      <div
-        className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: post.content, }}
-      />
     </main>
   );
 }
