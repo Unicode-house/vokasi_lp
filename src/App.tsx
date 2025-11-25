@@ -97,6 +97,7 @@ function App () {
             {/* Mobile: burger button */}
             <div className='md:hidden flex items-center'>
               <button
+                title='button'
                 aria-label='Toggle menu'
                 aria-expanded={mobileOpen}
                 onClick={() => setMobileOpen(v => !v)}
