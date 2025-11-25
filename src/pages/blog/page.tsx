@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from "react";
 
+import { localPosts } from "./localpost";
 import Breadcrumb from "@/components/Breadcrumb";
 import SearchBar from "@/components/SearchBar";
 import Pagination from "@/components/Pagination";
@@ -98,7 +99,8 @@ export default function BlogPage() {
             };
           }) ?? [];
 
-        setAllPosts(postsWithExtras);
+        setAllPosts([...localPosts, ...postsWithExtras]);
+        sessionStorage.setItem("allPosts", JSON.stringify([...localPosts, ...postsWithExtras]));
       } catch (error) {
         console.error("Gagal fetch posts:", error);
       }
