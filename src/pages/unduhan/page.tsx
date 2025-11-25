@@ -139,9 +139,9 @@ const Unduhan = () => {
       <section className="max-w-6xl mx-auto mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 grid md:grid-cols-2 gap-6">
         <div className="flex justify-center items-center">
           <img
-            src="/logos/logo_unicode.png"
+            src="/logos/logo_delta.png"
             alt="Gedung BPK"
-            className="rounded-2xl shadow-sm w-80 object-cover"
+            className="rounded-2xl  w-80 object-cover"
           />
         </div>
         <div className="space-y-4">
