@@ -130,8 +130,8 @@ export default function BlogPage() {
 
       {/* LEFT CONTENT */}
       <div className="w-full lg:w-[70%] flex flex-col gap-10">
-        <Breadcrumb items={["Beranda", "Berita"]} />
-        <h1 className="text-3xl font-bold text-blue-600">Semua Berita</h1>
+        <Breadcrumb items={["Beranda", "Blog"]} />
+        <h1 className="text-3xl font-bold text-blue-600">Semua Blog</h1>
 
         {loading ? (
           <p className="text-blue-600">Loading artikel...</p>
