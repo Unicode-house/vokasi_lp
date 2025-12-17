@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   BrowserRouter as Router,
@@ -91,25 +92,24 @@ function App () {
     <>
       <nav className='w-full fixed h-20 z-[999] flex justify-center items-center'>
         <div
-          className={`h-full transition-all flex justify-between items-center relative   ${
+          className={`h-full transition-all flex justify-between items-center relative ${
             isScrolled
-              ? 'w-4/5 h-16 bg-white/30 top-4 rounded-xl shadow-xl backdrop-blur-sm'
+              ? 'w-4/5 h-16 bg-white/50 top-4 rounded-2xl shadow-xl backdrop-blur-md'
               : 'w-full bg-transparent top-0'
           } px-6 py-4`}
         >
           <div className='w-1/3 h-full flex items-center gap-2'>
-            <img src='/logos/logo_delta.png' alt='' className='w-12 h-12' />
-            <span className='text-2xl font-semibold'>Delta</span>
+            <img src='/assets/delta.png' alt='Delta Logo' className='w-12 h-12 object-contain' />
+            <span className='text-2xl font-bold text-gray-900'>Delta</span>
           </div>
 
           <div className='w-2/3 flex items-center justify-end gap-6 relative'>
-            {/* Desktop menu - simple text links */}
-            <div className='hidden md:flex items-center gap-6'>
+            <div className='hidden md:flex items-center gap-8'>
               {menus.map((menu, index) => (
                 <Link
                   to={menuPaths[index]}
                   key={index}
-                  className={`relative z-10 px-4 py-1 font-medium transition-colors duration-200 ${
+                  className={`relative z-10 px-2 py-1 font-semibold transition-colors duration-200 ${
                     activeIndex === index
                       ? 'text-blue-600'
                       : 'text-gray-600 hover:text-blue-600'
@@ -119,60 +119,6 @@ function App () {
                 </Link>
               ))}
             </div>
-
-            {/* Mobile: burger button */}
-            <div className='md:hidden flex items-center'>
-              <button
-                title='button'
-                aria-label='Toggle menu'
-                aria-expanded={mobileOpen}
-                onClick={() => setMobileOpen(v => !v)}
-                className='relative z-20 p-2 rounded-md hover:bg-gray-100/20'
-              >
-                {/* simple burger icon */}
-                <svg
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d={
-                      mobileOpen
-                        ? 'M6 6L18 18M6 18L18 6'
-                        : 'M3 6h18M3 12h18M3 18h18'
-                    }
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {/* Mobile dropdown menu */}
-            {mobileOpen && (
-              <div className='md:hidden absolute right-4 top-full mt-3 w-52 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg z-30 overflow-hidden'>
-                <div className='flex flex-col'>
-                  {menus.map((menu, index) => (
-                    <Link
-                      to={menuPaths[index]}
-                      key={index}
-                      onClick={() => setMobileOpen(false)}
-                      className={`block px-4 py-3 text-sm font-medium border-b last:border-b-0 ${
-                        activeIndex === index
-                          ? 'text-blue-600'
-                          : 'text-gray-700 hover:text-blue-600'
-                      }`}
-                    >
-                      {menu}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </nav>

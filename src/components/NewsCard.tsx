@@ -9,73 +9,29 @@ interface NewsItem {
 
 const NewsCard = ({ item }: { item: NewsItem }) => {
   return (
-    <article
-      className="
-        bg-white 
-        rounded-3xl 
-        overflow-hidden 
-        border border-gray-200 
-        hover:shadow-md 
-        transition-all
-      "
-    >
-      {/* IMAGE */}
-      <div className="relative w-full h-72 overflow-hidden">
-        <img
-          src={item.image_url}
-          alt={item.title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).className =
-              'w-full h-full object-contain p-10 bg-gray-100';
-          }}
-        />
-
-        {/* CATEGORY BADGE */}
-        <span
-          className="
-            absolute top-4 left-4 
-            bg-purple-600 text-white 
-            px-4 py-1 
-            rounded-full text-xs font-semibold
-            shadow-sm capitalize
-          "
-        >
+    <article className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+      <div className="relative w-full h-64 overflow-hidden">
+        <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
+        {/* Badge diubah dari purple ke blue */}
+        <span className="absolute top-4 left-4 bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold shadow-md">
           {item.source_id}
         </span>
       </div>
 
-      {/* CONTENT */}
-      <div className="p-5 flex flex-col h-full">
-
-        {/* DATE */}
-        <span className="text-sm text-gray-500 mb-1">
+      <div className="p-6 flex flex-col gap-3">
+        <span className="text-sm text-gray-400 font-medium">
           {new Date(item.pubDate).toLocaleDateString("id-ID")}
         </span>
-
-        {/* TITLE */}
-        <h2 className="font-semibold text-xl text-gray-900 leading-snug mb-2 line-clamp-2">
+        <h2 className="font-bold text-xl text-gray-900 line-clamp-2 leading-tight">
           {item.title}
         </h2>
-
-        {/* DESCRIPTION */}
-        <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">
+        <p className="text-gray-600 text-sm line-clamp-3">
           {item.description || "Tidak ada deskripsi tersedia."}
         </p>
-
-        {/* BUTTON */}
         <a
           href={item.link}
           target="_blank"
-          className="
-            block w-full text-center 
-            bg-blue-600 text-white 
-            font-semibold py-3 
-            rounded-xl 
-            hover:bg-blue-700 
-            transition-colors
-          "
+          className="mt-2 w-full text-center bg-blue-600 text-white font-bold py-3 rounded-2xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
         >
           Baca Selengkapnya
         </a>
@@ -83,5 +39,4 @@ const NewsCard = ({ item }: { item: NewsItem }) => {
     </article>
   );
 };
-
 export default NewsCard;
