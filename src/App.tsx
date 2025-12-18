@@ -19,14 +19,14 @@ import Unduhan from "./pages/unduhan/page";
 import BlogDetailPage from "./pages/blog/detail/detail";
 import Footer from "./components/footer";
 import AdminLayout from "./layouts/admin/AdminLayout";
-import PostList from "./pages/admin/PostList";
-import PostForm from "./pages/admin/PostForm";
 import Dashboard from "./pages/admin/Dashboard";
 import NewsManager from "./pages/admin/news/NewsManager";
 import GalleryManager from "./pages/admin/gallery/GalleryManager";
 import DownloadManager from "./pages/admin/downloads/DownloadManager";
 import InboxManager from "./pages/admin/message/InboxManager";
 import Settings from "./pages/admin/Settings";
+import PostForm from "./pages/admin/posts/PostForm";
+import PostList from "./pages/admin/posts/PostList";
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
