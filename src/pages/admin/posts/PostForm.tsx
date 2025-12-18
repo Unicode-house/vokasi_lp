@@ -1,65 +1,67 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { blogService, type BlogPost } from "@/services/blogService";
 import { Save, ArrowLeft, Image as ImageIcon } from "lucide-react";
+
+// Interface lokal
+interface BlogPost {
+  title: string;
+  category: string;
+  author: string;
+  content: string;
+  image?: string;
+  description: string;
+  date: string;
+}
 
 export default function PostForm() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const isEditMode = !!id;
+  const [isSaving, setIsSaving] = useState(false);
 
+  // Initial State kosong
   const [formData, setFormData] = useState<BlogPost>({
     title: "",
     category: "",
     author: "",
     description: "",
     content: "",
-    image: "", // Menambah field image
+    image: "",
     date: new Date().toISOString().split('T')[0],
   });
 
-  // Fetch data jika mode edit
-  const { data: existingData, isLoading } = useQuery({
-    queryKey: ['post', id],
-    queryFn: () => blogService.getById(id!),
-    enabled: isEditMode
-  });
-
+  // SIMULASI FETCH DATA (Jika Edit Mode)
   useEffect(() => {
-    if (existingData) {
-      setFormData(existingData);
+    if (isEditMode) {
+      // Kita pura-pura ambil data dari server
+      // Dalam real app, ini diganti blogService.getById(id)
+      setFormData({
+        title: "Contoh Artikel Edit (Dummy)",
+        category: "Kegiatan",
+        author: "Admin",
+        description: "Ini adalah deskripsi contoh untuk mode edit.",
+        content: "Ini adalah isi konten artikel yang sedang diedit. Data ini statis hanya untuk demo UI.",
+        image: "https://placehold.co/600x400?text=Edit+Mode",
+        date: "2024-01-01",
+      });
     }
-  }, [existingData]);
+  }, [isEditMode]);
 
-  // Handle Input Change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Mutation
-  const mutation = useMutation({
-    mutationFn: (data: BlogPost) => {
-      return isEditMode ? blogService.update(id!, data) : blogService.create(data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
-      alert("Berhasil menyimpan artikel!");
-      navigate("/admin/posts");
-    },
-    onError: (error) => {
-        console.error(error);
-        alert("Gagal menyimpan data.");
-    }
-  });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate(formData);
+    setIsSaving(true);
+    
+    // Simulasi delay simpan ke server
+    setTimeout(() => {
+        setIsSaving(false);
+        alert(`Berhasil menyimpan artikel (Simulasi):\nJudul: ${formData.title}`);
+        navigate("/admin/posts");
+    }, 1000);
   };
-
-  if (isEditMode && isLoading) return <div>Loading...</div>;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-6xl mx-auto pb-20">
@@ -75,7 +77,7 @@ export default function PostForm() {
                 <ArrowLeft size={24} />
             </button>
             <h1 className="text-2xl font-bold text-gray-800">
-                {isEditMode ? "Edit Artikel" : "Tulis Artikel Baru"}
+                {isEditMode ? "Edit Artikel (Dummy)" : "Tulis Artikel Baru"}
             </h1>
         </div>
         <div className="flex gap-3">
@@ -88,11 +90,11 @@ export default function PostForm() {
             </button>
             <button 
                 type="submit" 
-                disabled={mutation.isPending}
+                disabled={isSaving}
                 className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm disabled:opacity-50 transition-all"
             >
                 <Save size={18} />
-                {mutation.isPending ? "Menyimpan..." : "Simpan & Publish"}
+                {isSaving ? "Menyimpan..." : "Simpan & Publish"}
             </button>
         </div>
       </div>

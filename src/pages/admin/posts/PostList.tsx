@@ -1,46 +1,70 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { blogService, type BlogPost } from "@/services/blogService";
 import { Edit, Trash2, Plus, Search, ImageOff } from "lucide-react";
 
+// Definisi tipe data lokal (tanpa import dari service)
+interface BlogPost {
+  id: string;
+  title: string;
+  category: string;
+  author: string;
+  content: string;
+  image?: string;
+  description: string;
+  date: string;
+}
+
 export default function PostList() {
-  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch data
-  const { data: posts, isLoading, isError } = useQuery({
-    queryKey: ['posts'],
-    queryFn: blogService.getAll
-  });
-
-  // Delete mutation
-  const deleteMutation = useMutation({
-    mutationFn: blogService.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
-      // Gunakan toast notification library jika ada, untuk MVP alert cukup
-      alert("Artikel berhasil dihapus");
+  // DUMMY DATA: Data ini menggantikan response dari backend
+  const [posts, setPosts] = useState<BlogPost[]>([
+    {
+      id: "1",
+      title: "Kegiatan MPLS Tahun Ajaran 2024/2025",
+      category: "Kegiatan",
+      author: "Humas Delta",
+      content: "Isi konten dummy...",
+      description: "Dokumentasi kegiatan masa pengenalan lingkungan sekolah.",
+      date: "2024-07-15",
+      image: "https://placehold.co/600x400?text=MPLS+2024"
     },
-    onError: () => {
-        alert("Gagal menghapus artikel");
+    {
+      id: "2",
+      title: "Prestasi Siswa di LKS Tingkat Provinsi",
+      category: "Prestasi",
+      author: "Kesiswaan",
+      content: "Isi konten dummy...",
+      description: "Siswa SMK Delta berhasil menyabet juara 2.",
+      date: "2024-08-20",
+      image: "" // Contoh tanpa gambar
+    },
+    {
+      id: "3",
+      title: "Penerimaan Peserta Didik Baru Gelombang 2",
+      category: "Berita Sekolah",
+      author: "Panitia PPDB",
+      content: "Isi konten dummy...",
+      description: "Informasi lengkap mengenai pendaftaran gelombang kedua.",
+      date: "2024-05-10",
+      image: "https://placehold.co/600x400?text=PPDB"
     }
-  });
+  ]);
 
+  // Fungsi Delete Dummy
   const handleDelete = (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus artikel ini? Tindakan ini tidak dapat dibatalkan.")) {
-      deleteMutation.mutate(id);
+    if (confirm("Apakah Anda yakin ingin menghapus artikel ini? (Hanya simulasi)")) {
+      // Hapus dari state lokal saja
+      setPosts(posts.filter(post => post.id !== id));
+      alert("Artikel berhasil dihapus (Simulasi)");
     }
   };
 
-  // Filter Logic untuk pencarian client-side (MVP)
-  const filteredPosts = posts?.filter((post: BlogPost) => 
+  // Filter Logic Client-side
+  const filteredPosts = posts.filter((post) => 
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     post.author.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  if (isLoading) return <div className="p-8 text-center">Memuat data artikel...</div>;
-  if (isError) return <div className="p-8 text-center text-red-600">Gagal mengambil data. Pastikan backend (port 5002) berjalan.</div>;
 
   return (
     <div>
@@ -48,7 +72,7 @@ export default function PostList() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
             <h1 className="text-2xl font-bold text-gray-800">Manajemen Blog</h1>
-            <p className="text-sm text-gray-500">Kelola artikel dan publikasi sekolah</p>
+            <p className="text-sm text-gray-500">Kelola artikel dan publikasi sekolah (Mode Dummy)</p>
         </div>
         
         <div className="flex gap-2 w-full sm:w-auto">
@@ -82,14 +106,14 @@ export default function PostList() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {filteredPosts?.length === 0 ? (
+            {filteredPosts.length === 0 ? (
                 <tr>
                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                         Tidak ada artikel yang ditemukan.
                     </td>
                 </tr>
             ) : (
-                filteredPosts?.map((post: BlogPost) => (
+                filteredPosts.map((post) => (
                     <tr key={post.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-3">
                         <div className="w-12 h-12 bg-gray-100 rounded overflow-hidden flex items-center justify-center border">
@@ -120,7 +144,7 @@ export default function PostList() {
                             <Edit size={18} />
                         </Link>
                         <button 
-                            onClick={() => handleDelete(post.id!)} 
+                            onClick={() => handleDelete(post.id)} 
                             className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
                             title="Hapus"
                         >
